@@ -1,12 +1,28 @@
 import { apiClient } from "./client";
 import { Dog, SearchResponse, Match } from "../types/api";
+import qs from "qs";
 
 export const getBreeds = () => {
   return apiClient.get<string[]>("/dogs/breeds");
 };
 
-export const searchDogs = (params: string) => {
-  return apiClient.get<SearchResponse>("/dogs/search", { params });
+export const searchDogs = async (params: {
+  breeds?: string[];
+  zipCodes?: string[];
+  ageMin?: number;
+  ageMax?: number;
+  size?: number;
+  from?: string;
+  sort?: string;
+}) => {
+  const encodedParams = qs.stringify(params, { arrayFormat: "brackets" });
+
+  console.log("Encoded query parameters:", encodedParams);
+  const response = await apiClient.get<SearchResponse>(
+    `/dogs/search?${encodedParams}`
+  );
+  console.log("API response:", response.data);
+  return response;
 };
 
 export const getDogs = (ids: string[]) => {

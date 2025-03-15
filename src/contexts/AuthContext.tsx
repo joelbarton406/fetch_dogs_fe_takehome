@@ -1,4 +1,3 @@
-// src/features/auth/AuthContext.tsx
 import React, {
   createContext,
   useState,
@@ -6,7 +5,7 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import { verifySession, login, logout } from "../../api/auth";
+import { verifySession, login, logout } from "@/api/auth";
 
 interface AuthContextType {
   user: { name: string; email: string } | null;

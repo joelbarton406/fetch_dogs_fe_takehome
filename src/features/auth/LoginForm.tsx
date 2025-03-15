@@ -1,6 +1,6 @@
 // src/features/auth/LoginForm.tsx
 import React, { useState } from "react";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export const LoginForm: React.FC = () => {
