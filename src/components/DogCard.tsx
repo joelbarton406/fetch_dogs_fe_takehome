@@ -1,45 +1,59 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DogsContext } from "@/contexts/DogsContext";
 import { Dog } from "@/types/api";
 import getDistanceBetweenZipCodes from "@/utils/calculateDistance";
-import { FaHeart, FaMapLocationDot } from "react-icons/fa6";
-// import { MdTimer } from "react-icons/md";
-// import { PiDogLight } from "react-icons/pi";
+import { FaHeart, FaLocationPin } from "react-icons/fa6";
+
 interface DogCardProps {
   dog: Dog;
 }
 
 const DogCard: React.FC<DogCardProps> = ({ dog }) => {
-  const searchContext = useContext(DogsContext);
-  if (!searchContext) return <span>DogsContext failed</span>;
-  const { favorites, setFavorites, location } = searchContext;
   const { id, name, breed, img, zip_code } = dog;
+  const searchContext = useContext(DogsContext);
+  if (!searchContext) throw new Error("DogsContext failed");
+  const { favorites, setFavorites, location } = searchContext;
+  const [distance, setDistance] = useState<number | null>(null);
 
-  let distance;
-  if (zip_code && location.zip_code) {
-    distance = getDistanceBetweenZipCodes(zip_code, location.zip_code);
-  }
+  useEffect(() => {
+    let isMounted = true;
+
+    const calculateDistance = async () => {
+      if (zip_code && location.zip_code) {
+        const calculatedDistance = await getDistanceBetweenZipCodes(
+          zip_code,
+          location.zip_code
+        );
+        if (isMounted && calculatedDistance) {
+          setDistance(calculatedDistance);
+        }
+      }
+    };
+
+    calculateDistance();
+    return () => {
+      isMounted = false;
+    };
+  }, [zip_code, location.zip_code]);
 
   return (
     <li className="relative flex flex-col items-center">
-      {/* Group for hover effects */}
       <div className="relative w-72 h-72 overflow-hidden group">
-        {/* Image */}
         <img
           src={img}
           className="w-full h-full object-cover transition-all duration-300 group-hover:brightness-10"
           alt={`${name}-${breed}`}
         />
 
-        {/* Overlay Text (Initially hidden, appears on hover) */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className="absolute top-2 left-2">
-            <span className="text-lg text-white font-semibold">
-              {distance} km away
-              {/* {} miles away */}
+          <div className="absolute top-2 left-2">{name}</div>
+          <span className="text-white font-semibold text-lg">
+            <span className="text-md text-white font-thin">
+              {distance !== null
+                ? `${distance.toFixed(1)} km away`
+                : "unknown distance"}
             </span>
-          </div>
-          <span className="text-white font-semibold text-lg">{name}</span>
+          </span>
         </div>
       </div>
 

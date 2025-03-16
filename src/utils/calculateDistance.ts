@@ -1,5 +1,8 @@
 import { fromAddress } from "react-geocode";
 
+const zipCoordCache: Record<string, { lat: number; lng: number }> = {};
+const distanceCache: Record<string, number> = {};
+
 function toRadians(degrees: number): number {
   return (degrees * Math.PI) / 180;
 }
@@ -10,7 +13,7 @@ function haversineDistance(
   lat2: number,
   lon2: number
 ): number {
-  const R = 6371;
+  const R = 6371; // Earth's radius in km
   const dLat = toRadians(lat2 - lat1);
   const dLon = toRadians(lon2 - lon1);
   const a =
@@ -23,22 +26,56 @@ function haversineDistance(
   return R * c;
 }
 
-async function getDistanceBetweenZipCodes(zip1: string, zip2: string) {
+async function getCoordinatesForZip(zip: string) {
+  if (zipCoordCache[zip]) {
+    return zipCoordCache[zip];
+  }
+
   try {
-    const response1 = await fromAddress(zip1);
-    const response2 = await fromAddress(zip2);
+    const response = await fromAddress(zip);
+    const coords = response.results[0].geometry.location;
 
-    const { lat: lat1, lng: lon1 } = response1.results[0].geometry.location;
-    const { lat: lat2, lng: lon2 } = response2.results[0].geometry.location;
+    zipCoordCache[zip] = coords;
 
-    const distance = haversineDistance(lat1, lon1, lat2, lon2);
-    console.log(
-      `Distance between ${zip1} and ${zip2} is ${distance.toFixed(2)} km`
+    return coords;
+  } catch (error) {
+    console.error(`Error fetching geocode data for ${zip}:`, error);
+    throw error;
+  }
+}
+
+async function getDistanceBetweenZipCodes(
+  zip1: string,
+  zip2: string
+): Promise<number> {
+  const cacheKey = [zip1, zip2].sort().join("-");
+
+  if (distanceCache[cacheKey] !== undefined) {
+    return distanceCache[cacheKey];
+  }
+
+  try {
+    const [coords1, coords2] = await Promise.all([
+      getCoordinatesForZip(zip1),
+      getCoordinatesForZip(zip2),
+    ]);
+
+    const distance = haversineDistance(
+      coords1.lat,
+      coords1.lng,
+      coords2.lat,
+      coords2.lng
     );
+
+    distanceCache[cacheKey] = distance;
 
     return distance;
   } catch (error) {
-    console.error("Error fetching geocode data:", error);
+    console.error(
+      `Error calculating distance between ${zip1} and ${zip2}:`,
+      error
+    );
+    return 0;
   }
 }
 
