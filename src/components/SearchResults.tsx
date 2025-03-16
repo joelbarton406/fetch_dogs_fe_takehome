@@ -3,6 +3,8 @@ import { useQuery } from "react-query";
 import { DogsContext } from "@/contexts/DogsContext";
 import { getDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
+import PagesMenu from "./PagesMenu";
+import DogCard from "./DogCard";
 
 function SearchResults() {
   const ctx = useContext(DogsContext);
@@ -29,19 +31,23 @@ function SearchResults() {
       enabled: !!ctx,
     }
   );
+
   if (!ctx) return <span>DogsContext failed</span>;
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching dog details: {error.message}</div>;
 
   return (
     <>
-      <div>Search Component</div>
       <div>Total search results: {ctx.searchResultTotal}</div>
-      <ul>
+      <h4 className="font-bold text-2xl text-pink-600">
+        Favorites ({ctx.favorites.size})
+      </h4>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5">
         {dogDetails?.map((dog) => (
-          <li key={dog.id}>{dog.name}</li>
+          <DogCard key={dog.id} dog={dog} />
         ))}
       </ul>
+      <PagesMenu />
     </>
   );
 }

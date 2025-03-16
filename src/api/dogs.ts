@@ -17,11 +17,9 @@ export const searchDogs = async (params: {
 }) => {
   const encodedParams = qs.stringify(params, { arrayFormat: "brackets" });
 
-  console.log("Encoded query parameters:", encodedParams);
   const response = await apiClient.get<SearchResponse>(
     `/dogs/search?${encodedParams}`
   );
-  console.log("API response:", response.data);
   return response;
 };
 

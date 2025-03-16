@@ -1,6 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate, // Import Navigate
+} from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import { DogsProvider } from "./contexts/DogsContext.tsx";
@@ -19,12 +23,16 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
+        index: true,
+        element: <Navigate to="/search" replace />,
+      },
+      {
         path: "/search",
         element: (
           <ProtectedRoute>
             <DogsProvider>
-              <div>Favorites</div>
-              <Filter />
+              {/* <div>Favorites</div> */}
+              {/* <Filter /> */}
               <Search />
             </DogsProvider>
           </ProtectedRoute>
