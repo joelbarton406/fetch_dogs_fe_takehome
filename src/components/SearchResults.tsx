@@ -38,7 +38,6 @@ function SearchResults() {
 
   return (
     <>
-      <div>Total search results: {ctx.searchResultTotal}</div>
       <h4 className="font-bold text-2xl text-pink-600">
         Favorites ({ctx.favorites.size})
       </h4>
@@ -47,6 +46,7 @@ function SearchResults() {
           <DogCard key={dog.id} dog={dog} />
         ))}
       </ul>
+      <div>Total search results: {ctx.searchResultTotal}</div>
       <PagesMenu />
     </>
   );

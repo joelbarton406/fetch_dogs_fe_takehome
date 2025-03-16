@@ -6,8 +6,9 @@ import {
   Navigate, // Import Navigate
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { AuthProvider } from "./contexts/AuthContext.tsx";
-import { DogsProvider } from "./contexts/DogsContext.tsx";
+import { AuthProvider } from "@/contexts/AuthContext.tsx";
+import { DogsProvider } from "@/contexts/DogsContext.tsx";
+
 import HomeLayout from "./components/HomeLayout.tsx";
 import Error from "./components/Error.tsx";
 import Search from "./components/SearchResults.tsx";
@@ -31,8 +32,7 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <DogsProvider>
-              {/* <div>Favorites</div> */}
-              {/* <Filter /> */}
+              <Filter />
               <Search />
             </DogsProvider>
           </ProtectedRoute>
