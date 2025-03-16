@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { DogsContext } from "@/contexts/DogsContext";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,12 +23,20 @@ function Filter() {
   const { breeds, selectedBreeds, setSelectedBreeds } = ctx;
 
   const [open, setOpen] = useState(false);
+  const [tempSelectedBreeds, setTempSelectedBreeds] =
+    useState<string[]>(selectedBreeds);
 
-  const toggleBreedSelection = (breed: string) => {
-    setSelectedBreeds((prevSelectedBreeds) =>
-      prevSelectedBreeds.includes(breed)
-        ? prevSelectedBreeds.filter((b) => b !== breed)
-        : [...prevSelectedBreeds, breed]
+  useEffect(() => {
+    if (!open) {
+      setSelectedBreeds(tempSelectedBreeds);
+    }
+  }, [open, setSelectedBreeds, tempSelectedBreeds]);
+
+  const toggleTempBreedSelection = (breed: string) => {
+    setTempSelectedBreeds((prevTempSelectedBreeds) =>
+      prevTempSelectedBreeds.includes(breed)
+        ? prevTempSelectedBreeds.filter((b) => b !== breed)
+        : [...prevTempSelectedBreeds, breed]
     );
   };
 
@@ -48,7 +56,7 @@ function Filter() {
         </PopoverTrigger>
         <PopoverContent className="w-[240px] p-0">
           <Command>
-            <CommandInput placeholder="Search breed..." className="h-9" />
+            <CommandInput placeholder="Search breeds..." className="h-9" />
             <CommandList>
               <CommandEmpty>No breed found.</CommandEmpty>
               <CommandGroup>
@@ -58,13 +66,13 @@ function Filter() {
                     key={breed}
                     value={breed}
                     onSelect={() => {
-                      toggleBreedSelection(breed);
+                      toggleTempBreedSelection(breed);
                     }}
                   >
                     {breed}
                     <Check
                       className={cn(
-                        selectedBreeds.includes(breed)
+                        tempSelectedBreeds.includes(breed)
                           ? "opacity-100"
                           : "opacity-0"
                       )}

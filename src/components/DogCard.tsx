@@ -75,7 +75,7 @@ const DogCard: React.FC<DogCardProps> = ({ dog }) => {
           }}
         >
           <FaHeart
-            className={`text-3xl ${
+            className={`text-2xl ${
               favorites.has(id) ? "text-pink-600" : "text-white"
             } cursor-pointer `}
           />

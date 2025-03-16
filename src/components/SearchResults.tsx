@@ -5,6 +5,7 @@ import { getDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
 import PagesMenu from "./PagesMenu";
 import DogCard from "./DogCard";
+import { FaHeart } from "react-icons/fa6";
 
 function SearchResults() {
   const ctx = useContext(DogsContext);
@@ -38,9 +39,13 @@ function SearchResults() {
 
   return (
     <>
-      <h4 className="font-bold text-2xl text-pink-600">
-        Favorites ({ctx.favorites.size})
-      </h4>
+      <div className="relative inline-block">
+        <FaHeart className="cursor-pointer text-4xl text-pink-600" />
+        <span className="absolute inset-0 flex items-center justify-center text-white text-sm font-semibold">
+          {ctx.favorites.size}
+        </span>
+      </div>
+      <PagesMenu />
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5">
         {dogDetails?.map((dog) => (
           <DogCard key={dog.id} dog={dog} />

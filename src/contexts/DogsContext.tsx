@@ -16,6 +16,7 @@ export const DogsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { breeds, selectedBreeds, setSelectedBreeds } = useFetchBreeds();
+
   const {
     dogs,
     searchResultTotal,
@@ -26,7 +27,7 @@ export const DogsProvider: React.FC<{ children: ReactNode }> = ({
     setResultsPerPage,
     favorites,
     setFavorites,
-  } = useFetchDogs();
+  } = useFetchDogs(selectedBreeds);
 
   const { location } = useFetchLocation();
 

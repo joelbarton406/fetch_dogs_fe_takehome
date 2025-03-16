@@ -2,12 +2,12 @@ import { searchDogs } from "@/api/dogs";
 import { useState, useEffect } from "react";
 
 export type Favorites = Map<string, boolean>;
-export const useFetchDogs = () => {
+export const useFetchDogs = (selectedBreeds: string[]) => {
   const [dogs, setDogs] = useState<string[]>([]);
   const [searchResultTotal, setSearchResultTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [resultsPerPage, setResultsPerPage] = useState(12);
+  const [resultsPerPage, setResultsPerPage] = useState(18);
 
   const [favorites, setFavorites] = useState<Map<string, boolean>>(new Map());
 
@@ -19,7 +19,7 @@ export const useFetchDogs = () => {
           sort: "breed:asc",
           size: resultsPerPage,
           from: from.toString(),
-          breeds: [], // no breed selection for initial fetch!
+          breeds: selectedBreeds,
         });
         const { resultIds, total } = response.data;
         setDogs(resultIds);
@@ -30,7 +30,7 @@ export const useFetchDogs = () => {
       }
     };
     fetchDogs();
-  }, [currentPage, resultsPerPage]);
+  }, [currentPage, resultsPerPage, selectedBreeds]);
 
   return {
     dogs,
