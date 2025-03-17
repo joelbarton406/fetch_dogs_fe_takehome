@@ -12,6 +12,7 @@ import { DogsProvider } from "@/contexts/DogsContext.tsx";
 import HomeLayout from "@/components/HomeLayout.tsx";
 import Error from "@/components/Error.tsx";
 import Login from "@/components/Login.tsx";
+
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
 import Results from "./components/Results.tsx";
 import UserInputMenu from "./components/UserInputMenu.tsx";
@@ -40,7 +41,11 @@ const router = createBrowserRouter([
         ),
         errorElement: <Error />,
       },
-      { path: "/login", element: <Login />, errorElement: <Error /> },
+      {
+        path: "/login",
+        element: <Login />,
+        errorElement: <Error />,
+      },
     ],
   },
 ]);
