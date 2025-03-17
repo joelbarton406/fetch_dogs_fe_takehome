@@ -7,7 +7,7 @@ export const useFetchDogs = (selectedBreeds: string[]) => {
   const [searchResultTotal, setSearchResultTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [resultsPerPage, setResultsPerPage] = useState(18);
+  const [resultsPerPage, setResultsPerPage] = useState(3);
 
   const [favorites, setFavorites] = useState<Map<string, boolean>>(new Map());
 

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { DogsContext } from "@/contexts/DogsContext";
 import { getDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
@@ -9,6 +9,7 @@ import { FaHeart } from "react-icons/fa6";
 
 function SearchResults() {
   const ctx = useContext(DogsContext);
+  const queryClient = useQueryClient();
 
   const {
     data: dogDetails,
@@ -17,19 +18,39 @@ function SearchResults() {
   } = useQuery<Dog[], Error>(
     ["dogDetails", ctx?.dogs],
     async () => {
-      if (!ctx) {
+      if (!ctx?.dogs?.length) {
         return [];
       }
-      const results = await Promise.all(
-        ctx.dogs.map(async (id) => {
-          const res = await getDogs([id]);
-          return res.data;
-        })
-      );
-      return results.flat();
+
+      const cachedDogs: Dog[] = [];
+      const dogsToFetch: string[] = [];
+
+      for (const id of ctx.dogs) {
+        const cachedDog = queryClient.getQueryData<Dog>(["dog", id]);
+        if (cachedDog) {
+          cachedDogs.push(cachedDog);
+        } else {
+          dogsToFetch.push(id);
+        }
+      }
+
+      if (dogsToFetch.length === 0) {
+        return cachedDogs;
+      }
+
+      const results = await getDogs(dogsToFetch);
+      const fetchedDogs = results.data;
+
+      fetchedDogs.forEach((dog) => {
+        queryClient.setQueryData(["dog", dog.id], dog);
+      });
+
+      return [...cachedDogs, ...fetchedDogs];
     },
     {
-      enabled: !!ctx,
+      enabled: !!ctx && !!ctx.dogs?.length,
+      staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+      cacheTime: 15 * 60 * 1000, // Keep unused data in cache for 15 minutes
     }
   );
 

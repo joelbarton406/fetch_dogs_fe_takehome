@@ -1,6 +1,7 @@
 import { fromAddress } from "react-geocode";
 
 const zipCoordCache: Record<string, { lat: number; lng: number }> = {};
+
 const distanceCache: Record<string, number> = {};
 
 function toRadians(degrees: number): number {
@@ -33,13 +34,13 @@ async function getCoordinatesForZip(zip: string) {
 
   try {
     const response = await fromAddress(zip);
-    const coords = response.results[0].geometry.location;
+    const location = response.results[0].geometry.location;
 
-    zipCoordCache[zip] = coords;
+    zipCoordCache[zip] = location;
 
-    return coords;
+    return location;
   } catch (error) {
-    console.error(`Error fetching geocode data for ${zip}:`, error);
+    console.error(`Error fetching coordinates for ${zip}:`, error);
     throw error;
   }
 }
@@ -55,16 +56,16 @@ async function getDistanceBetweenZipCodes(
   }
 
   try {
-    const [coords1, coords2] = await Promise.all([
+    const [coord1, coord2] = await Promise.all([
       getCoordinatesForZip(zip1),
       getCoordinatesForZip(zip2),
     ]);
 
     const distance = haversineDistance(
-      coords1.lat,
-      coords1.lng,
-      coords2.lat,
-      coords2.lng
+      coord1.lat,
+      coord1.lng,
+      coord2.lat,
+      coord2.lng
     );
 
     distanceCache[cacheKey] = distance;
