@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  setDefaults,
-  fromLatLng,
-  OutputFormat,
-} from "react-geocode";
+import { setDefaults, fromLatLng, OutputFormat } from "react-geocode";
 
-export interface CurrentLocation {
+export interface UserLocation {
   latitude: number | null;
   longitude: number | null;
   error: string | null;
@@ -14,8 +10,8 @@ export interface CurrentLocation {
   zip_code: string | null;
 }
 
-export const useFetchLocation = () => {
-  const [location, setLocation] = useState<CurrentLocation>({
+export const useUserLocation = () => {
+  const [location, setLocation] = useState<UserLocation>({
     latitude: null,
     longitude: null,
     error: null,
@@ -25,7 +21,7 @@ export const useFetchLocation = () => {
   });
 
   useEffect(() => {
-    const fetchLocationData = async (latitude: number, longitude: number) => {
+    const fetchUserLocation = async (latitude: number, longitude: number) => {
       try {
         const response = await fromLatLng(latitude, longitude);
         const addressComponents = response.results[0].address_components;
@@ -64,7 +60,7 @@ export const useFetchLocation = () => {
               longitude,
               error: null,
             }));
-            await fetchLocationData(latitude, longitude);
+            await fetchUserLocation(latitude, longitude);
           },
           (error) => {
             setLocation({

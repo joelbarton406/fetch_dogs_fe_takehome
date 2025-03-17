@@ -1,6 +1,6 @@
 import { useContext, memo, FC } from "react";
 import { DogsContext } from "@/contexts/DogsContext";
-import { useLocationData } from "@/hooks/useLocationData";
+// import { useLocationData } from "@/hooks/useLocationData";
 import { Dog } from "@/types/api";
 import { FaHeart } from "react-icons/fa6";
 
@@ -17,13 +17,10 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
   }
 
   const { favorites, setFavorites, location } = searchContext;
-  const currentLocationZip = location?.zip_code;
+//   const userLocationZip = location?.zip_code;
 
-  const { data, isLoading, error } = useLocationData(
-    zip_code,
-    currentLocationZip
-  );
-  if (!data) return <li>Error</li>;
+//   const { data, isLoading, error } = useLocationData(zip_code, userLocationZip);
+//   if (!data) return <li>Error</li>;
 
   const handleToggleFavorite = () => {
     setFavorites((prevFavorites) => {
@@ -37,12 +34,12 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
     });
   };
 
-  if (isLoading) {
-    return <li>Loading data...</li>;
-  }
-  if (error) {
-    return <li>Error: {error.message}</li>;
-  }
+//   if (isLoading) {
+//     return <li>Loading data...</li>;
+//   }
+//   if (error) {
+//     return <li>Error: {error.message}</li>;
+//   }
 
   return (
     <li className="relative flex flex-col items-center text-white">
@@ -59,7 +56,7 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
           <div className="flex flex-col items-center text-md font-light opacity-65">
             <span>{breed}</span>
             <span>
-              {data.city}, {data.state}
+              {/* {data.city}, {data.state} */} nowhere
             </span>
             <span>{age} years old</span>
           </div>
@@ -70,21 +67,21 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
             }}
           >
             <span className="text-md font-light text-white">
-              {data.distance?.toFixed(1)} km away
+              {/* {data.distance?.toFixed(1)} km away */} far away
             </span>
           </button>
+          <button
+            className="absolute top-2 right-2"
+            onClick={handleToggleFavorite}
+          >
+            <FaHeart
+              size={24}
+              className={`cursor-pointer  ${
+                favorites.has(id) ? "text-pink-600" : ""
+              }`}
+            />
+          </button>
         </div>
-      </div>
-
-      <div className="absolute top-2 right-2">
-        <button onClick={handleToggleFavorite}>
-          <FaHeart
-            size={24}
-            className={`cursor-pointer  ${
-              favorites.has(id) ? "text-pink-600" : ""
-            }`}
-          />
-        </button>
       </div>
     </li>
   );

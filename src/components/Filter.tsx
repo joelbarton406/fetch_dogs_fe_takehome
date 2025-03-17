@@ -1,89 +1,71 @@
-import { useContext, useState, useEffect } from "react";
-import { DogsContext } from "@/contexts/DogsContext";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import React, { useState } from "react";
+import BreedComboBox from "./BreedComboBox";
 
 function Filter() {
-  const ctx = useContext(DogsContext);
-  if (!ctx) throw new Error("DogsContext failed");
-  const { breeds, selectedBreeds, setSelectedBreeds } = ctx;
+//   const [range, setRange] = useState({ min: 0, max: 15 });
 
-  const [open, setOpen] = useState(false);
-  const [tempSelectedBreeds, setTempSelectedBreeds] =
-    useState<string[]>(selectedBreeds);
+//   const handleMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const value = Math.min(Number(event.target.value), range.max - 1);
+//     setRange({ ...range, min: value });
+//   };
 
-  useEffect(() => {
-    if (!open) {
-      setSelectedBreeds(tempSelectedBreeds);
-    }
-  }, [open, setSelectedBreeds, tempSelectedBreeds]);
-
-  const toggleTempBreedSelection = (breed: string) => {
-    setTempSelectedBreeds((prevTempSelectedBreeds) =>
-      prevTempSelectedBreeds.includes(breed)
-        ? prevTempSelectedBreeds.filter((b) => b !== breed)
-        : [...prevTempSelectedBreeds, breed]
-    );
-  };
+//   const handleMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const value = Math.max(Number(event.target.value), range.min + 1);
+//     setRange({ ...range, max: value });
+//   };
 
   return (
     <>
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="ghost"
-            role="combobox"
-            aria-expanded={open}
-            className="w-[250px] justify-between font-semibold"
+      <BreedComboBox />
+      {/* <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Age Range
+        </label>
+        <div className="relative pt-6 pb-2">
+          <div
+            id="range-slider"
+            className="h-2 bg-gray-200 rounded-full relative"
           >
-            Filter by breed
-            <ChevronsUpDown className="opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[250px] p-0">
-          <Command>
-            <CommandInput placeholder="Search breeds..." className="h-9" />
-            <CommandList>
-              <CommandEmpty>No breed found.</CommandEmpty>
-              <CommandGroup>
-                {breeds.map((breed) => (
-                  <CommandItem
-                    className="flex flex-row justify-between"
-                    key={breed}
-                    value={breed}
-                    onSelect={() => {
-                      toggleTempBreedSelection(breed);
-                    }}
-                  >
-                    {breed}
-                    <Check
-                      className={cn(
-                        tempSelectedBreeds.includes(breed)
-                          ? "opacity-100"
-                          : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
+            <div
+              className="absolute h-2 bg-blue-500 rounded-full"
+              style={{
+                left: `${(range.min / 15) * 100}%`,
+                right: `${100 - (range.max / 15) * 100}%`,
+              }}
+            ></div>
+            <input
+              type="range"
+              min="0"
+              max="15"
+              value={range.min}
+              onChange={handleMinChange}
+              className="absolute w-full h-2 opacity-0 cursor-pointer"
+              style={{ left: 0, zIndex: 1 }}
+            />
+            <input
+              type="range"
+              min="0"
+              max="15"
+              value={range.max}
+              onChange={handleMaxChange}
+              className="absolute w-full h-2 opacity-0 cursor-pointer"
+              style={{ left: 0, zIndex: 2 }}
+            />
+            <div
+              className="absolute w-4 h-4 -mt-1 -ml-2 bg-white border-2 border-blue-500 rounded-full cursor-pointer"
+              style={{ left: `${(range.min / 15) * 100}%` }}
+            ></div>
+            <div
+              className="absolute w-4 h-4 -mt-1 -ml-2 bg-white border-2 border-blue-500 rounded-full cursor-pointer"
+              style={{ left: `${(range.max / 15) * 100}%` }}
+            ></div>
+          </div>
+          <div className="flex justify-between mt-2 text-sm text-gray-600">
+            <span>{range.min} years</span>
+            <span>{range.max} years</span>
+          </div>
+        </div>
+      </div> */}
     </>
   );
 }

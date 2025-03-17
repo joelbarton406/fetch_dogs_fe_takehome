@@ -3,7 +3,6 @@ import { getBreeds } from "@/api/dogs";
 
 export const useFetchBreeds = () => {
   const [breeds, setBreeds] = useState<string[]>([]);
-  const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchBreeds = async () => {
@@ -13,7 +12,6 @@ export const useFetchBreeds = () => {
         return response.data;
       } catch (error) {
         console.error("Error fetching breeds:", error);
-
         return [];
       }
     };
@@ -22,7 +20,5 @@ export const useFetchBreeds = () => {
 
   return {
     breeds,
-    selectedBreeds,
-    setSelectedBreeds,
   };
 };

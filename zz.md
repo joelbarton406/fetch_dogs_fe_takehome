@@ -2,21 +2,22 @@
 
 #### minimum requirements
 
-- [ ] (ROUTE) user login and auth
-  - [ ] login card
+- [x] (ROUTE) user login and auth
+  - [x] login card (can be much improved)
+    - [ ] improved
   - [ ] other information/title/headers/photos?
-- [ ] (PROTECTED ROUTE) search page (with geolocation data)
-  - [ ] (MAIN FIELD) Present dogs
-    - [ ] individual card
+- [x] (PROTECTED ROUTE) search page (with geolocation data)
+  - [x] (MAIN FIELD) Present dogs
+    - [x] individual card
   - [ ] (FEATURE) filter by
-    - [ ] breed
+    - [x] breeds
     - [ ] age
     - [ ] location
   - [ ] (FEATURE) sort by
     - [ ] location (nearest/furthest)
     - [ ] dog name (asc/descneding)
   - [ ] (FEATURE) favorites
-    - [ ] displayed favorites under main nav
+    - [x] displayed favorites under main nav
 
 #### stretch
 

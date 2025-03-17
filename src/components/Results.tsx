@@ -7,7 +7,7 @@ import PagesMenu from "./PagesMenu";
 import DogCard from "./DogCard";
 import { FaHeart } from "react-icons/fa6";
 
-function SearchResults() {
+function Results() {
   const ctx = useContext(DogsContext);
   const queryClient = useQueryClient();
 
@@ -49,7 +49,7 @@ function SearchResults() {
     },
     {
       enabled: !!ctx && !!ctx.dogs?.length,
-      staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes
+      staleTime: 15 * 60 * 1000, // Consider data fresh for 15 minutes
       cacheTime: 15 * 60 * 1000, // Keep unused data in cache for 15 minutes
     }
   );
@@ -66,7 +66,7 @@ function SearchResults() {
           {ctx.favorites.size}
         </span>
       </div>
-      <PagesMenu />
+
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5">
         {dogDetails?.map((dog) => (
           <DogCard key={dog.id} dog={dog} />
@@ -78,4 +78,4 @@ function SearchResults() {
   );
 }
 
-export default SearchResults;
+export default Results;
