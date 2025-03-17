@@ -5,17 +5,31 @@ import { getDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
 import PagesMenu from "./PagesMenu";
 import DogCard from "./DogCard";
-import { FaHeart } from "react-icons/fa6";
+
+function SearchCount({ total }: { total: number }) {
+  const formattedTotal = total.toLocaleString();
+  return <span>search results: {formattedTotal}</span>;
+}
+
+function Result({ data }: { data: Dog[] | undefined }) {
+  return (
+    <div className="mt-3">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5">
+        {Array.isArray(data) ? (
+          data.map((dog) => <DogCard key={dog.id} dog={dog} />)
+        ) : (
+          <span>No matches {"</3"}</span>
+        )}
+      </ul>
+    </div>
+  );
+}
 
 function Results() {
   const ctx = useContext(DogsContext);
   const queryClient = useQueryClient();
 
-  const {
-    data: dogDetails,
-    isLoading,
-    error,
-  } = useQuery<Dog[], Error>(
+  const { data, isLoading, error } = useQuery<Dog[], Error>(
     ["dogDetails", ctx?.dogs],
     async () => {
       if (!ctx?.dogs?.length) {
@@ -60,19 +74,9 @@ function Results() {
 
   return (
     <>
-      <div className="relative inline-block">
-        <FaHeart className="cursor-pointer text-4xl text-pink-600" />
-        <span className="absolute inset-0 flex items-center justify-center text-white text-sm font-semibold">
-          {ctx.favorites.size}
-        </span>
-      </div>
-
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5">
-        {dogDetails?.map((dog) => (
-          <DogCard key={dog.id} dog={dog} />
-        ))}
-      </ul>
-      <div>Total search results: {ctx.searchResultTotal}</div>
+      <SearchCount total={ctx.searchResultTotal} />
+      <Result data={data} />
+      <SearchCount total={ctx.searchResultTotal} />
       <PagesMenu />
     </>
   );

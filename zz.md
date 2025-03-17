@@ -9,6 +9,7 @@
 - [x] (PROTECTED ROUTE) search page (with geolocation data)
   - [x] (MAIN FIELD) Present dogs
     - [x] individual card
+    - [ ] add skeleton during load
   - [ ] (FEATURE) filter by
     - [x] breeds
     - [ ] age
