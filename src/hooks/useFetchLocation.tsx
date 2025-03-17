@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   setDefaults,
   fromLatLng,
-  fromAddress,
   OutputFormat,
 } from "react-geocode";
 
@@ -103,17 +102,3 @@ export const useFetchLocation = () => {
 
   return { location };
 };
-
-// export const fetchLocationByZipCode = async (zip_code: string) => {
-//   try {
-//     const response = await fromAddress(zip_code);
-//     const locationInfo = await response.json();
-//     const city: string = locationInfo.places[0]["place name"];
-//     const state: string = locationInfo.places[0]["state abbreviation"];
-//     console.log({ city, state });
-//     return { city, state, zip_code };
-//   } catch (error: unknown) {
-//     console.log(error);
-//     throw new Error("Failed to fetch location data");
-//   }
-// };
