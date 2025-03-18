@@ -10,24 +10,35 @@ const SortFieldRadio = () => {
   const { sortField, setSortField, setCurrentPage } = ctx;
 
   return (
-    <div className="">
-      <RadioGroup
-        //   orientation={"vertical"}
-        value={sortField}
-        onValueChange={(value) => {
-          setSortField(value as SortField);
-          setCurrentPage(1);
-        }}
-      >
+    <div className="ml-3">
+        <RadioGroup
+      value={sortField}
+      onValueChange={(value) => {
+        setSortField(value as SortField);
+        setCurrentPage(1);
+      }}
+    >
+      <div className="flex items-center">
         <RadioGroupItem value="breed" id="r1" />
-        <Label htmlFor="r1">Breed</Label>
+        <Label htmlFor="r1" className="ml-2">
+          Breed
+        </Label>
+      </div>
 
+      <div className="flex items-center">
         <RadioGroupItem value="name" id="r2" />
-        <Label htmlFor="r2">Name</Label>
+        <Label htmlFor="r2" className="ml-2">
+          Name
+        </Label>
+      </div>
 
+      <div className="flex items-center">
         <RadioGroupItem value="age" id="r3" />
-        <Label htmlFor="r3">Age</Label>
-      </RadioGroup>
+        <Label htmlFor="r3" className="ml-2">
+          Age
+        </Label>
+      </div>
+    </RadioGroup>
     </div>
   );
 };

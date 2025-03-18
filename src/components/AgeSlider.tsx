@@ -5,12 +5,17 @@ import { DogsContext } from "@/contexts/DogsContext";
 function AgeSlider() {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
-  <div>DogContext Failed</div>;
   const { ageMinMax, setAgeMinMax } = ctx;
 
   return (
-    <div className="bg-white rounded-lg flex items-center ml-4 mr-1 mt-2">
-      <span className="font-semibold text-gray-700 mr-4">{ageMinMax[0]}</span>
+    <div className="bg-white rounded-lg flex flex-col items-center w-80 font-semibold text-gray-700">
+      <div className="mb-4">
+        <span className="mr-1">Age range</span>
+        <span className="">
+          ({ageMinMax[0]}...{ageMinMax[1]})
+        </span>
+      </div>
+
       <Slider
         value={ageMinMax}
         min={0}
@@ -18,7 +23,6 @@ function AgeSlider() {
         onValueChange={(values) => setAgeMinMax(values)}
         className="flex-grow"
       />
-      <span className="font-semibold text-gray-700 ml-2">{ageMinMax[1]}</span>
     </div>
   );
 }

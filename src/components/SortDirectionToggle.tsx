@@ -1,6 +1,7 @@
-import { Switch } from "@/components/ui/switch";
 import { useContext } from "react";
 import { DogsContext } from "@/contexts/DogsContext";
+import { Button } from "./ui/button";
+import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 function SortDirectionToggle() {
   const ctx = useContext(DogsContext);
@@ -13,15 +14,15 @@ function SortDirectionToggle() {
   };
 
   return (
-    <div className="flex flex-col space-y-2">
-      <div className="flex flex-row space-x-4">
-        <Switch
-          id="sort-order-toggle"
-          checked={sortDirection === "desc"}
-          onCheckedChange={handleToggleDirection}
-        />
-      </div>
-    </div>
+    <>
+      <Button
+        className="font-semibold mr-8 mt-6"
+        onClick={handleToggleDirection}
+        variant="default"
+      >
+        Sort {sortDirection === "asc" ? <FaChevronUp /> : <FaChevronDown />}
+      </Button>
+    </>
   );
 }
 

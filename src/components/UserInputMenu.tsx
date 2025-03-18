@@ -1,10 +1,11 @@
 import { FaSearch } from "react-icons/fa";
-
 import { SetStateAction, useContext, useEffect, useState } from "react";
 import { DogsContext } from "@/contexts/DogsContext";
 import BreedComboBox from "./BreedComboBox";
 import AgeSlider from "@/components/AgeSlider";
 import { Input } from "@/components/ui/input";
+import SortDirectionToggle from "./SortDirectionToggle";
+import SortFieldRadio from "./SortFieldRadio";
 
 function DogLocationInput() {
   const [locationValue, setLocationValue] = useState("");
@@ -81,15 +82,18 @@ const UserInputMenu = () => {
   if (!ctx) throw new Error("DogsContext failed");
   <span>DogsContext failed</span>;
   const formattedTotal = ctx?.searchResultTotal.toLocaleString();
-
   return (
-    <div className="bg-white shadow-sm rounded-lg border border-gray-200 p-3 my-3">
-      <div className="flex flex-row items-center gap-4">
+    <div className="bg-white shadow-md rounded-md py-6 px-4 my-8 flex flex-col">
+      <div className="flex flex-row items-center gap-4 mb-6">
         <BreedComboBox />
         <DogLocationInput />
         <DogNameInput />
       </div>
-      <AgeSlider />
+      <div className="flex flex-row items-center align-middle justify-between gap-4">
+        <SortFieldRadio />
+        <AgeSlider />
+        <SortDirectionToggle />
+      </div>
       {/* <span>search results: {formattedTotal}</span> */}
     </div>
   );
