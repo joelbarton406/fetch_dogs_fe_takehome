@@ -1,12 +1,12 @@
 import { searchDogs } from "@/api/dogs";
 import { useState, useEffect } from "react";
-
 export type Favorites = Map<string, boolean>;
 type SortDirection = "asc" | "desc";
 export type SortField = "breed" | "name" | "age";
 
 export const useFetchDogs = () => {
   const [dogs, setDogs] = useState<string[]>([]);
+
   const [favorites, setFavorites] = useState<Favorites>(new Map());
 
   const [searchResultTotal, setSearchResultTotal] = useState(0);
@@ -17,27 +17,29 @@ export const useFetchDogs = () => {
   const [sortField, setSortField] = useState<SortField>("breed");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
+  const [ageMinMax, setAgeMinMax] = useState<number[]>([0, 14]);
   const [zipCodes, setZipCodes] = useState<string[]>([]);
-  const [ageMin, setAgeMin] = useState<number>(0);
-  const [ageMax, setAgeMax] = useState<number>(14);
 
   useEffect(() => {
     const fetchDogs = async () => {
       try {
         const from = ((currentPage - 1) * resultsPerPage).toString();
         const sort = `${sortField}:${sortDirection}`;
+        const [ageMin, ageMax] = ageMinMax;
 
-        const response = await searchDogs({
-          sort: sort,
+        const dogsResponse = await searchDogs({
+          sort,
           size: resultsPerPage,
-          from: from,
+          from,
           breeds: selectedBreeds,
-          zipCodes: zipCodes,
-          ageMax: ageMax,
-          ageMin: ageMin,
+          zipCodes,
+          ageMax,
+          ageMin,
         });
+        const { resultIds, total } = dogsResponse;
 
-        const { resultIds, total } = response.data;
+        // const dogLocationsResponse = await
+
         setDogs(resultIds);
         setSearchResultTotal(total);
         setTotalPages(Math.ceil(total / resultsPerPage));
@@ -51,8 +53,7 @@ export const useFetchDogs = () => {
     resultsPerPage,
     selectedBreeds,
     zipCodes,
-    ageMin,
-    ageMax,
+    ageMinMax,
     sortField,
     sortDirection,
   ]);
@@ -61,14 +62,12 @@ export const useFetchDogs = () => {
     dogs,
     favorites,
     setFavorites,
-
     searchResultTotal,
     totalPages,
     currentPage,
     setCurrentPage,
     resultsPerPage,
     setResultsPerPage,
-
     sortField,
     setSortField,
     sortDirection,
@@ -77,9 +76,7 @@ export const useFetchDogs = () => {
     setSelectedBreeds,
     zipCodes,
     setZipCodes,
-    ageMin,
-    setAgeMin,
-    ageMax,
-    setAgeMax,
+    ageMinMax,
+    setAgeMinMax,
   };
 };

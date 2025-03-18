@@ -12,8 +12,11 @@
     - [ ] add skeleton during load
   - [ ] (FEATURE) filter by
     - [x] breeds
+      - [ ] debounce this
     - [ ] age
-    - [ ] location
+      - [ ] debounce this
+    - [ ] location (zip code)
+      - [ ] debounce this
   - [ ] (FEATURE) sort by
     - [ ] location (nearest/furthest)
     - [ ] dog name (asc/descneding)

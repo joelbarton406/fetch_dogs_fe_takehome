@@ -12,7 +12,8 @@ import {
 
 function PagesMenu() {
   const ctx = useContext(DogsContext);
-  if (!ctx) return <span>DogsContext failed</span>;
+  if (!ctx) throw new Error("DogsContext failed");
+  <span>DogsContext failed</span>;
   const { totalPages, currentPage, setCurrentPage } = ctx;
 
   const getPageNumbers = () => {

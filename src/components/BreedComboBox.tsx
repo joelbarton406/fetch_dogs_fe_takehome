@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -23,22 +23,14 @@ const BreedComboBox = () => {
   const { breeds, selectedBreeds, setSelectedBreeds, setCurrentPage } = ctx;
 
   const [open, setOpen] = useState(false);
-  const [tempSelectedBreeds, setTempSelectedBreeds] =
-    useState<string[]>(selectedBreeds);
 
-  useEffect(() => {
-    if (!open) {
-      setSelectedBreeds(tempSelectedBreeds);
-    }
-  }, [open, setSelectedBreeds, tempSelectedBreeds]);
-
-  const toggleTempBreedSelection = (breed: string) => {
-    setTempSelectedBreeds((prevTempSelectedBreeds) =>
-      prevTempSelectedBreeds.includes(breed)
-        ? prevTempSelectedBreeds.filter((b) => b !== breed)
-        : [...prevTempSelectedBreeds, breed]
+  const toggleBreedSelection = (breed: string) => {
+    setSelectedBreeds((prevSelectedBreeds) =>
+      prevSelectedBreeds.includes(breed)
+        ? prevSelectedBreeds.filter((b) => b !== breed)
+        : [...prevSelectedBreeds, breed]
     );
-    setCurrentPage(1)
+    setCurrentPage(1);
   };
 
   return (
@@ -48,9 +40,9 @@ const BreedComboBox = () => {
           variant="ghost"
           role="combobox"
           aria-expanded={open}
-          className="w-[150px] justify-between font-semibold"
+          className="justify-between font-semibold"
         >
-          Search breeds
+          Search dogs by breed
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -66,13 +58,13 @@ const BreedComboBox = () => {
                   key={breed}
                   value={breed}
                   onSelect={() => {
-                    toggleTempBreedSelection(breed);
+                    toggleBreedSelection(breed);
                   }}
                 >
                   {breed}
                   <Check
                     className={cn(
-                      tempSelectedBreeds.includes(breed)
+                      selectedBreeds.includes(breed)
                         ? "opacity-100"
                         : "opacity-0"
                     )}

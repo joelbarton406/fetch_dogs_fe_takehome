@@ -1,9 +1,10 @@
 import { apiClient } from "./client";
-import { Dog, SearchResponse, Match } from "../types/api";
+import { Dog, Match } from "../types/api";
 import qs from "qs";
 
-export const getBreeds = () => {
-  return apiClient.get<string[]>("/dogs/breeds");
+export const getBreeds = async () => {
+  const response = await apiClient.get<string[]>("/dogs/breeds");
+  return response.data;
 };
 
 export const searchDogs = async (params: {
@@ -16,17 +17,16 @@ export const searchDogs = async (params: {
   sort?: string;
 }) => {
   const encodedParams = qs.stringify(params, { arrayFormat: "brackets" });
-
-  const response = await apiClient.get<SearchResponse>(
-    `/dogs/search?${encodedParams}`
-  );
-  return response;
+  const response = await apiClient.get(`/dogs/search?${encodedParams}`);
+  return response.data;
 };
 
-export const getDogs = (ids: string[]) => {
-  return apiClient.post<Dog[]>("/dogs", ids);
+export const getDogs = async (ids: string[]) => {
+  const response = await apiClient.post<Dog[]>("/dogs", ids);
+  return response.data;
 };
 
-export const getMatch = (ids: string[]) => {
-  return apiClient.post<Match>("/dogs/match", ids);
+export const getMatch = async (ids: string[]) => {
+  const response = await apiClient.post<Match>("/dogs/match", ids);
+  return response.data;
 };

@@ -1,44 +1,22 @@
-// hooks/useLocationData.ts
 import { useQuery } from "react-query";
 import getDistanceBetweenZipCodes from "@/utils/calculateDistance";
+import { fetchZipData } from "@/api/location";
+import { ZipData } from "@/types/api";
 
-interface ZippopotamUsResponse {
-  places?: {
-    ["place name"]: string;
-    state: string;
-    ["state abbreviation"]: string;
-  }[];
-}
+async function fetchZipLocationData(zipCode: string, currentZipCode: string) {
+  try {
+    const distance = await getDistanceBetweenZipCodes(zipCode, currentZipCode);
+    const zipData = await fetchZipData(
+      `http://api.zippopotam.us/us/${zipCode}`
+    );
+    const city = zipData.places?.[0]?.["place name"] || "";
+    const state = zipData.places?.[0]?.["state abbreviation"] || "";
 
-interface ZipData {
-  city: string;
-  state: string;
-  distance: number | null;
-}
-
-async function fetchZipLocationData(
-  zipCode: string,
-  currentZipCode: string
-): Promise<ZipData> {
-  const response = await fetch(`http://api.zippopotam.us/us/${zipCode}`);
-  if (!response.ok) {
+    return { city, state, distance };
+  } catch (error) {
+    console.error(error);
     throw new Error(`Failed to fetch location data for ZIP: ${zipCode}`);
   }
-  const data: ZippopotamUsResponse = await response.json();
-
-  let city = "";
-  let state = "";
-  if (data.places && data.places[0]) {
-    city = data.places[0]["place name"];
-    state = data.places[0]["state abbreviation"];
-  }
-
-  let distance: number | null = null;
-  if (zipCode && currentZipCode) {
-    distance = await getDistanceBetweenZipCodes(zipCode, currentZipCode);
-  }
-
-  return { city, state, distance };
 }
 
 export function useLocationData(zipCode?: string, currentZipCode?: string) {
@@ -49,7 +27,8 @@ export function useLocationData(zipCode?: string, currentZipCode?: string) {
       enabled: Boolean(zipCode && currentZipCode),
       staleTime: Infinity,
       cacheTime: Infinity,
-      retry: false,
+      retry: true,
+      retryDelay: 2000,
     }
   );
 }

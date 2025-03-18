@@ -19,7 +19,6 @@ export function LoginForm({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      console.log({ data });
       await login(data.name, data.email);
       navigate("/search");
     } catch (err: unknown) {

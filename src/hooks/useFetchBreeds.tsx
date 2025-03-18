@@ -7,9 +7,9 @@ export const useFetchBreeds = () => {
   useEffect(() => {
     const fetchBreeds = async () => {
       try {
-        const response = await getBreeds();
-        setBreeds(response.data);
-        return response.data;
+        const breedData = await getBreeds();
+        setBreeds(breedData);
+        return breedData;
       } catch (error) {
         console.error("Error fetching breeds:", error);
         return [];
