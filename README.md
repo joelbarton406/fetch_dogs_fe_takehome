@@ -11,12 +11,12 @@
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/your-repo.git
+   git clone https://github.com/joelbarton406/fetch_dogs_fe_takehome.git
    ```
 
 2. **Navigate into the project directory:**
    ```sh
-   cd your-repo
+   cd fetch_dogs_fe_takehome
    ```
 
 3. **Install dependencies:**
