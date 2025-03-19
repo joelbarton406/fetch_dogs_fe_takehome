@@ -1,54 +1,50 @@
-# React + TypeScript + Vite
+# Fetch Dogs App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+#### Deployed: [my-awesome-app](https://your-vercel-deployment-url.vercel.app)
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack
+- **Vite** (React + TypeScript)
+- **Tailwind CSS** 
+- **ShadCN UI** (some ui components)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Running Locally
 
-## Expanding the ESLint configuration
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/yourusername/your-repo.git
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+2. **Navigate into the project directory:**
+   ```sh
+   cd your-repo
+   ```
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+3. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+
+4. **Run the development server:**
+   ```sh
+   npm run dev
+   ```
+
+5. **Open the app in your browser:**
+   ```
+   http://localhost:5173
+   ```
+
+## 📦 Building for Production
+
+To create an optimized production build, run:
+```sh
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+This will generate static files in the `dist/` directory.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ❓ Troubleshooting
+- Ensure you have **Node.js (v16 or later)** installed.
+- If you encounter type errors, try adding `"skipLibCheck": true` in `tsconfig.app.json`.
+- If styles aren’t applying, check your Tailwind setup in `tailwind.config.js`.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
