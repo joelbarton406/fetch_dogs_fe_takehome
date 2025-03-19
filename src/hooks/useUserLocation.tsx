@@ -59,7 +59,7 @@ export const useUserLocation = () => {
     };
 
     setDefaults({
-      key: "AIzaSyDVAOhBM-eG0GAwcg0NESEMAodg72hzMhA",
+      key: "AIzaSyDVAOhBM-eG0GAwcg0NESEMAodg72hzMhA", // visible but restricted key
       language: "en",
       region: "es",
       outputFormat: OutputFormat.JSON,
