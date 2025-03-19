@@ -1,4 +1,5 @@
 import { searchDogs } from "@/api/dogs";
+import { Dog } from "@/types/api";
 import { useState, useEffect } from "react";
 export type Favorites = Map<string, boolean>;
 type SortDirection = "asc" | "desc";
@@ -20,6 +21,8 @@ export const useFetchDogs = () => {
   const [ageMinMax, setAgeMinMax] = useState<number[]>([0, 14]);
   const [zipCodes, setZipCodes] = useState<string[]>([]);
 
+  const [adoptionMatch, setAdoptionMatch] = useState<Dog | null>(null);
+
   useEffect(() => {
     const fetchDogs = async () => {
       try {
@@ -37,8 +40,6 @@ export const useFetchDogs = () => {
           ageMin,
         });
         const { resultIds, total } = dogsResponse;
-
-        // const dogLocationsResponse = await
 
         setDogs(resultIds);
         setSearchResultTotal(total);
@@ -78,5 +79,7 @@ export const useFetchDogs = () => {
     setZipCodes,
     ageMinMax,
     setAgeMinMax,
+    adoptionMatch,
+    setAdoptionMatch,
   };
 };

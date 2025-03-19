@@ -49,40 +49,46 @@ function PagesMenu() {
   };
 
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            aria-disabled={currentPage <= 1}
-            className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
-            onClick={() => setCurrentPage(currentPage - 1)}
-          />
-        </PaginationItem>
-        {getPageNumbers().map((page, index) => (
-          <PaginationItem key={index}>
-            {page === "..." ? (
-              <PaginationEllipsis />
-            ) : (
-              <PaginationLink
-                onClick={() => setCurrentPage(page)}
-                isActive={currentPage === page}
-              >
-                {page}
-              </PaginationLink>
-            )}
+    <div className="mb-6">
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              aria-disabled={currentPage <= 1}
+              className={
+                currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+              }
+              onClick={() => setCurrentPage(currentPage - 1)}
+            />
           </PaginationItem>
-        ))}
-        <PaginationItem>
-          <PaginationNext
-            aria-disabled={currentPage >= totalPages}
-            className={
-              currentPage >= totalPages ? "pointer-events-none opacity-50" : ""
-            }
-            onClick={() => setCurrentPage(currentPage + 1)}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+          {getPageNumbers().map((page, index) => (
+            <PaginationItem key={index}>
+              {page === "..." ? (
+                <PaginationEllipsis />
+              ) : (
+                <PaginationLink
+                  onClick={() => setCurrentPage(page)}
+                  isActive={currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              )}
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              aria-disabled={currentPage >= totalPages}
+              className={
+                currentPage >= totalPages
+                  ? "pointer-events-none opacity-50"
+                  : ""
+              }
+              onClick={() => setCurrentPage(currentPage + 1)}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
   );
 }
 
