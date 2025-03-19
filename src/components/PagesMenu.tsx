@@ -67,7 +67,7 @@ function PagesMenu() {
                 <PaginationEllipsis />
               ) : (
                 <PaginationLink
-                  onClick={() => setCurrentPage(page)}
+                  onClick={() => setCurrentPage(Number(page))}
                   isActive={currentPage === page}
                 >
                   {page}

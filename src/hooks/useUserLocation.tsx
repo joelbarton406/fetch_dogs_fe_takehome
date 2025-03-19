@@ -19,6 +19,7 @@ export const useUserLocation = () => {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const extractAddressComponent = (components: any[], type: string) =>
       components.find((comp) => comp.types.includes(type))?.long_name || null;
 
