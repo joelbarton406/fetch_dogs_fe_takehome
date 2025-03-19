@@ -1,6 +1,6 @@
 # Fetch Dogs App
 
-#### Deployed: [my-awesome-app](https://your-vercel-deployment-url.vercel.app)
+#### Deployed: [Fetch Dogs](https://fetch-dogs-fe-takehome-a98acnp2m-joelbarton406s-projects.vercel.app)
 
 ## 🛠️ Tech Stack
 - **Vite** (React + TypeScript)
