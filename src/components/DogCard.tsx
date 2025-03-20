@@ -64,7 +64,7 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
           }`}
           loading="lazy"
           onLoad={async () => {
-            await new Promise((resolve) => setTimeout(resolve, 5000));
+            // await new Promise((resolve) => setTimeout(resolve, 5000));
             setIsLoading(false);
           }}
         />
