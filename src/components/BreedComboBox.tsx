@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { ButtonWrapper } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -36,15 +36,15 @@ const BreedComboBox = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
+        <ButtonWrapper
           variant="ghost"
           role="combobox"
           aria-expanded={open}
           className="justify-between font-semibold"
         >
           Search dogs by breed
-          <ChevronsUpDown className="opacity-50" />
-        </Button>
+          <ChevronsUpDown />
+        </ButtonWrapper>
       </PopoverTrigger>
       <PopoverContent className="w-[250px] h-[200px] p-0">
         <Command>
@@ -64,9 +64,7 @@ const BreedComboBox = () => {
                   {breed}
                   <Check
                     className={cn(
-                      selectedBreeds.includes(breed)
-                        ? "opacity-100"
-                        : "opacity-0"
+                      selectedBreeds.includes(breed) ? "visible" : "invisible"
                     )}
                   />
                 </CommandItem>

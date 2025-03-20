@@ -56,4 +56,15 @@ function Button({
   );
 }
 
-export { Button, buttonVariants };
+const ButtonWrapper = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<typeof Button>
+>((props, ref) => (
+  <div ref={ref} style={{ display: "inline-block" }}>
+    <Button {...props} />
+  </div>
+));
+
+ButtonWrapper.displayName = "ButtonWrapper";
+
+export { Button, buttonVariants, ButtonWrapper };
