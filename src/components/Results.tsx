@@ -3,11 +3,9 @@ import { useQuery } from "react-query";
 import { DogsContext } from "@/contexts/DogsContext";
 import { getDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
-import PagesMenu from "./PagesMenu";
+
 import DogCard from "./DogCard";
 import { fetchDogLocations } from "@/api/location";
-import SearchCount from "@/components/SearchCount";
-import FilterItemsBank from "@/components/FilterItemsBank";
 
 function Results() {
   const ctx = useContext(DogsContext);
@@ -40,19 +38,11 @@ function Results() {
   if (error) return <div>Error fetching Dogs: {error.message}</div>;
 
   return (
-    <>
-      <FilterItemsBank />
-      <div className="mt-2 mb-2">
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5">
-          {dogsConsolidated?.map((dog) => (
-            <DogCard key={dog.id} dog={dog} />
-          ))}
-        </ul>
-      </div>
-
-      <SearchCount />
-      <PagesMenu />
-    </>
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center sm:justify-items-stretch">
+      {dogsConsolidated?.map((dog) => (
+        <DogCard key={dog.id} dog={dog} />
+      ))}
+    </ul>
   );
 }
 

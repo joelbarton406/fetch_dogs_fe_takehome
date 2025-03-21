@@ -7,14 +7,13 @@ function FilterTerm({
   term: { type: string; value: string };
   removeFilterTerm: (type: string, value: string) => void;
 }) {
-    
   const getIcon = (type: string) => {
     switch (type) {
       case "breed":
         return <FaDog className="mr-2 text-gray-700" />;
       case "zipCode":
         return <FaLocationDot className="mr-2 text-gray-700" />;
-      case "name":
+      case "dogName":
         return <FaPaw className="mr-2 text-gray-700" />;
       default:
         return null;

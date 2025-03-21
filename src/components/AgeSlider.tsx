@@ -8,8 +8,8 @@ function AgeSlider() {
   const { ageMinMax, setAgeMinMax } = ctx;
 
   return (
-    <div className="bg-white rounded-lg flex flex-col items-center w-80 font-semibold text-gray-700">
-      <div className="mb-4">
+    <div className="bg-white rounded-lg flex flex-col items-center text-gray-700">
+      <div className="">
         <span className="mr-1">Age range</span>
         <span className="">
           ({ageMinMax[0]}...{ageMinMax[1]})

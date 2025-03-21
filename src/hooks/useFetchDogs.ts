@@ -27,6 +27,18 @@ export const useFetchDogs = () => {
   const [adoptionMatch, setAdoptionMatch] = useState<Dog | null>(null);
   const [filterTerms, setFilterTerms] = useState<FilterTerm[]>([]);
 
+  //   const [dogNames, setDogNames] = useState<string[]>([]);
+
+  //   const handleSearchedDogNamesChange = (candidateSearchDogName: string) => {
+  //     setDogNames((prevDogNames) => {
+  //       const updatedDogNames = prevDogNames.includes(candidateSearchDogName)
+  //         ? prevDogNames.filter((b) => b !== candidateSearchDogName)
+  //         : [...prevDogNames, candidateSearchDogName];
+  //       updateFilterTerms("dogName", candidateSearchDogName);
+  //       return updatedDogNames;
+  //     });
+  //   };
+
   const handleSelectedBreedsChange = (newSelectedBreed: string) => {
     setSelectedBreeds((prevSelectedBreeds) => {
       const updatedBreeds = prevSelectedBreeds.includes(newSelectedBreed)
@@ -132,13 +144,13 @@ export const useFetchDogs = () => {
     setSortDirection,
     selectedBreeds,
     handleSelectedBreedsChange,
-    zipCodes,
     handleZipCodesChange,
     ageMinMax,
     setAgeMinMax,
     adoptionMatch,
     setAdoptionMatch,
-    filterTerms, // Exposing the filterTerms to consumers.
+    filterTerms,
     removeFilterTerm,
+    // handleSearchedDogNamesChange,
   };
 };

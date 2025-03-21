@@ -71,10 +71,8 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
 
         {!isLoading && (
           <>
-            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 gap-y-2">
-              <span className="text-4xl font-bold border-y-2 rounded">
-                {name}
-              </span>
+            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="text-4xl font-bold rounded">{name}</span>
 
               <div className="flex flex-col items-center text-md font-light opacity-65">
                 <span>{breed}</span>

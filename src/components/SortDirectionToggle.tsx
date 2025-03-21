@@ -15,11 +15,7 @@ function SortDirectionToggle() {
 
   return (
     <>
-      <Button
-        className="font-semibold mr-8 mt-6"
-        onClick={handleToggleDirection}
-        variant="default"
-      >
+      <Button className="" onClick={handleToggleDirection} variant="default">
         Sort {sortDirection === "asc" ? <FaChevronUp /> : <FaChevronDown />}
       </Button>
     </>

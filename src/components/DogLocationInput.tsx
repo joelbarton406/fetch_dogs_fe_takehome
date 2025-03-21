@@ -3,7 +3,7 @@ import { DogsContext } from "@/contexts/DogsContext";
 import { FaSearch } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 
-export function DogLocationInput() {
+export default function DogLocationInput() {
   const [locationValue, setLocationValue] = useState("");
   const [isValidZipCode, setIsValidZipCode] = useState(false);
   const ctx = useContext(DogsContext);
@@ -17,6 +17,7 @@ export function DogLocationInput() {
   const handleSearchClick = () => {
     if (isValidZipCode) {
       handleZipCodesChange(locationValue);
+      setLocationValue("");
     }
   };
 

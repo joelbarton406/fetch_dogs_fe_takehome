@@ -7,18 +7,13 @@ import {
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "@/contexts/AuthContext.tsx";
-import { DogsProvider } from "@/contexts/DogsContext.tsx";
 
 import HomeLayout from "@/components/HomeLayout.tsx";
 import NotFound from "@/components/NotFound.tsx";
 import Login from "@/components/Login.tsx";
-
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
-import Results from "@/components/Results.tsx";
-import UserInputMenu from "@/components/UserInputMenu.tsx";
-// import FilterItemsBank from "@/components/FilterItemsBank";
-import SearchCount from "@/components/SearchCount";
-import "./index.css";
+import SearchLayout from "@/components/SearchLayout.tsx";
+import "@/index.css";
 
 const router = createBrowserRouter([
   {
@@ -34,12 +29,7 @@ const router = createBrowserRouter([
         path: "/search",
         element: (
           <ProtectedRoute>
-            <DogsProvider>
-              <UserInputMenu />
-
-              <SearchCount />
-              <Results />
-            </DogsProvider>
+            <SearchLayout />
           </ProtectedRoute>
         ),
         errorElement: <NotFound />,
