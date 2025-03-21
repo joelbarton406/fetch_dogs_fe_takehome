@@ -1,9 +1,8 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "./ui/button";
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -15,13 +14,24 @@ export const Header: React.FC = () => {
   if (!isAuthenticated) return null;
 
   return (
-    <header className="bg-white shadow-sm border-b border-pink-600">
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl font-semibold text-gray-800">Fetch Dogs</h1>
+    <header className="bg-white shadow-md border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+          Fetch Dogs
+        </h1>
 
-        <div className="flex items-center space-x-4">
-          <span className="text-gray-600 text-sm">Welcome, {user?.name}</span>
-          <Button variant='ghost' onClick={handleLogout} className="">Logout</Button>
+        <div className="flex items-center space-x-5">
+          <span className="text-gray-700 text-sm font-medium">
+            Welcome, {user?.name}
+          </span>
+
+          <Button
+            variant="outline"
+            onClick={handleLogout}
+            className="border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+          >
+            Logout
+          </Button>
         </div>
       </div>
     </header>

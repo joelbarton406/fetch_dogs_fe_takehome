@@ -20,16 +20,12 @@ import { DogsContext } from "@/contexts/DogsContext";
 const BreedComboBox = () => {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
-  const { breeds, selectedBreeds, setSelectedBreeds, setCurrentPage } = ctx;
+  const { breeds, selectedBreeds, handleSelectedBreedsChange, setCurrentPage } = ctx;
 
   const [open, setOpen] = useState(false);
 
   const toggleBreedSelection = (breed: string) => {
-    setSelectedBreeds((prevSelectedBreeds) =>
-      prevSelectedBreeds.includes(breed)
-        ? prevSelectedBreeds.filter((b) => b !== breed)
-        : [...prevSelectedBreeds, breed]
-    );
+    handleSelectedBreedsChange(breed);
     setCurrentPage(1);
   };
 

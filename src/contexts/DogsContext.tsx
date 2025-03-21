@@ -17,7 +17,6 @@ export const DogsProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const { breeds } = useFetchBreeds();
   //   const { userLocation } = useUserLocation();
-
   const dogSearchData = useFetchDogs();
 
   return (

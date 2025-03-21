@@ -7,7 +7,6 @@ function HomeLayout() {
       <Header />
       <div
         className="flex flex-col items-center justify-center"
-        // style={{ backgroundColor: "#323233" }}
       >
         <Outlet />
       </div>

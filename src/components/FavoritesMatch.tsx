@@ -8,10 +8,14 @@ function FavoritesMatch() {
   const { favorites } = ctx;
 
   return (
-    <div className="bg-white shadow-md rounded-md py-6 px-4 my-8 flex flex-col items-center  ">
-      <span className="font-bold text-lg mb-2">Favorites</span>
-      <span className="font-bold text-6xl text-pink-600">{favorites.size}</span>
-      {favorites.size > 0 && <AdoptionMatchModal />}
+    <div className="bg-white shadow-md rounded-lg py-6 px-5 my-8 flex flex-col items-center text-center w-full max-w-xs sm:max-w-sm md:max-w-md">
+      <span className="font-bold text-lg sm:text-xl mb-2">Favorites</span>
+      <span className="font-extrabold text-5xl sm:text-6xl text-pink-600">{favorites.size}</span>
+      {favorites.size > 0 && (
+        <div className="mt-4 w-full">
+          <AdoptionMatchModal />
+        </div>
+      )}
     </div>
   );
 }

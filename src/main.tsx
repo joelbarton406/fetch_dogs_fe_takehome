@@ -10,20 +10,21 @@ import { AuthProvider } from "@/contexts/AuthContext.tsx";
 import { DogsProvider } from "@/contexts/DogsContext.tsx";
 
 import HomeLayout from "@/components/HomeLayout.tsx";
-import Error from "@/components/Error.tsx";
+import NotFound from "@/components/NotFound.tsx";
 import Login from "@/components/Login.tsx";
 
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
-import Results from "./components/Results.tsx";
-import UserInputMenu from "./components/UserInputMenu.tsx";
-
+import Results from "@/components/Results.tsx";
+import UserInputMenu from "@/components/UserInputMenu.tsx";
+// import FilterItemsBank from "@/components/FilterItemsBank";
+import SearchCount from "@/components/SearchCount";
 import "./index.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
-    errorElement: <Error />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -35,16 +36,18 @@ const router = createBrowserRouter([
           <ProtectedRoute>
             <DogsProvider>
               <UserInputMenu />
+
+              <SearchCount />
               <Results />
             </DogsProvider>
           </ProtectedRoute>
         ),
-        errorElement: <Error />,
+        errorElement: <NotFound />,
       },
       {
         path: "/login",
         element: <Login />,
-        errorElement: <Error />,
+        errorElement: <NotFound />,
       },
     ],
   },
@@ -53,11 +56,9 @@ const router = createBrowserRouter([
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </QueryClientProvider>
-  </StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  </QueryClientProvider>
 );
