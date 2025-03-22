@@ -14,16 +14,24 @@ import {
 } from "@/components/ui/dialog";
 
 function FavoritesMatch() {
+  const [hover, setHover] = useState(false);
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
-  const { adoptionMatch, setAdoptionMatch, favorites } = ctx;
 
-  const [hover, setHover] = useState(false);
+  const { state, dispatch } = ctx;
+  const { adoptionMatch, favorites } = state;
 
   const handleMatch = async (ids: string[]) => {
-    const matchObject = await getMatch(ids);
-    const [match] = await getDogs([matchObject.match]);
-    setAdoptionMatch(match);
+    if (ids.length === 0) return;
+
+    try {
+      const matchObject = await getMatch(ids);
+      const [match] = await getDogs([matchObject.match]);
+
+      dispatch({ type: "SET_ADOPTION_MATCH", payload: match });
+    } catch (error) {
+      console.error("Error fetching match:", error);
+    }
   };
 
   return (

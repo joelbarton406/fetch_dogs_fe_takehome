@@ -36,19 +36,12 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext is not available.");
 
-  const { favorites, setFavorites } = ctx;
+  const { state, dispatch } = ctx;
+  const { favorites } = state;
   const [isLoading, setIsLoading] = useState(true);
 
   const handleToggleFavorite = () => {
-    setFavorites((prevFavorites) => {
-      const newFavorites = new Map(prevFavorites);
-      if (newFavorites.has(id)) {
-        newFavorites.delete(id);
-      } else {
-        newFavorites.set(id, true);
-      }
-      return newFavorites;
-    });
+    dispatch({ type: "TOGGLE_FAVORITE", payload: id });
   };
 
   return (
@@ -63,10 +56,7 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
             isLoading ? "opacity-0" : "opacity-100"
           }`}
           loading="lazy"
-          onLoad={async () => {
-            // await new Promise((resolve) => setTimeout(resolve, 5000));
-            setIsLoading(false);
-          }}
+          onLoad={() => setIsLoading(false)}
         />
 
         {!isLoading && (
@@ -76,10 +66,12 @@ const DogCard: FC<DogCardProps> = ({ dog }) => {
 
               <div className="flex flex-col items-center text-md font-light opacity-65">
                 <span>{breed}</span>
-                {location && (
+                {location ? (
                   <span>
                     {location.city}, {location.state}
                   </span>
+                ) : (
+                  <span>Location unknown</span>
                 )}
                 <span>{age} years old</span>
               </div>

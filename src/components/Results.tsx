@@ -11,26 +11,33 @@ function Results() {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
 
+  const { state } = ctx;
+
   const {
     data: dogsConsolidated,
     isLoading,
     error,
   } = useQuery<Dog[], Error>(
-    ["dogDetails", ctx?.dogs],
+    ["dogDetails", state.dogs],
     async () => {
-      if (!ctx?.dogs?.length) return [];
+      if (!state.dogs.length) return [];
 
-      const dogs = await getDogs(ctx.dogs);
+      const dogs = await getDogs(state.dogs);
       const zipCodes = Array.from(new Set(dogs.map((dog) => dog.zip_code)));
       const locations = await fetchDogLocations(zipCodes);
 
-      return dogs.map((dog, index) => ({
+      // Map locations to zip codes
+      const locationMap = Object.fromEntries(
+        locations.map((loc) => [loc.zip_code, loc])
+      );
+
+      return dogs.map((dog) => ({
         ...dog,
-        location: locations[index],
+        location: locationMap[dog.zip_code] || null, // Ensure location is correctly assigned
       }));
     },
     {
-      enabled: !!ctx && !!ctx.dogs?.length,
+      enabled: !!state.dogs.length,
     }
   );
 

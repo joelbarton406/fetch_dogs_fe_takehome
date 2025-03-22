@@ -20,13 +20,15 @@ import { DogsContext } from "@/contexts/DogsContext";
 const BreedComboBox = () => {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
-  const { breeds, selectedBreeds, handleSelectedBreedsChange, setCurrentPage } = ctx;
+  const { state, dispatch, breeds } = ctx;
 
   const [open, setOpen] = useState(false);
 
-  const toggleBreedSelection = (breed: string) => {
-    handleSelectedBreedsChange(breed);
-    setCurrentPage(1);
+  const updateSelectedBreeds = (breed: string) => {
+    dispatch({
+      type: "UPDATE_SELECTED_BREEDS",
+      payload: breed,
+    });
   };
 
   return (
@@ -54,13 +56,15 @@ const BreedComboBox = () => {
                   key={breed}
                   value={breed}
                   onSelect={() => {
-                    toggleBreedSelection(breed);
+                    updateSelectedBreeds(breed);
                   }}
                 >
                   {breed}
                   <Check
                     className={cn(
-                      selectedBreeds.includes(breed) ? "visible" : "invisible"
+                      state.selectedBreeds.includes(breed)
+                        ? "visible"
+                        : "invisible"
                     )}
                   />
                 </CommandItem>

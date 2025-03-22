@@ -1,12 +1,12 @@
 import { ReactNode, createContext } from "react";
 import { useFetchDogs } from "@/hooks/useFetchDogs";
 import { useFetchBreeds } from "@/hooks/useFetchBreeds";
-// import { useUserLocation } from "@/hooks/useUserLocation";
 
-interface DogsContextType
-  extends ReturnType<typeof useFetchDogs>,
-    //   ReturnType<typeof useUserLocation>,
-    ReturnType<typeof useFetchBreeds> {}
+interface DogsContextType {
+  state: ReturnType<typeof useFetchDogs>["state"];
+  dispatch: ReturnType<typeof useFetchDogs>["dispatch"];
+  breeds: string[];
+}
 
 export const DogsContext = createContext<DogsContextType | undefined>(
   undefined
@@ -15,18 +15,11 @@ export const DogsContext = createContext<DogsContextType | undefined>(
 export const DogsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  const { state, dispatch } = useFetchDogs();
   const { breeds } = useFetchBreeds();
-  //   const { userLocation } = useUserLocation();
-  const dogSearchData = useFetchDogs();
 
   return (
-    <DogsContext.Provider
-      value={{
-        breeds,
-        // userLocation,
-        ...dogSearchData,
-      }}
-    >
+    <DogsContext.Provider value={{ state, dispatch, breeds }}>
       {children}
     </DogsContext.Provider>
   );

@@ -14,7 +14,12 @@ function PagesMenu() {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
 
-  const { totalPages, currentPage, setCurrentPage } = ctx;
+  const { state, dispatch } = ctx;
+  const { totalPages, currentPage } = state;
+
+  const changePage = (page: number) => {
+    dispatch({ type: "SET_PAGE", payload: page });
+  };
 
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
@@ -67,7 +72,7 @@ function PagesMenu() {
                   ? "pointer-events-none opacity-50"
                   : "hover:bg-gray-200"
               }`}
-              onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
+              onClick={() => currentPage > 1 && changePage(currentPage - 1)}
             />
           </PaginationItem>
 
@@ -77,7 +82,7 @@ function PagesMenu() {
                 <PaginationEllipsis />
               ) : (
                 <PaginationLink
-                  onClick={() => setCurrentPage(Number(page))}
+                  onClick={() => changePage(Number(page))}
                   isActive={currentPage === page}
                   className="min-w-[32px] px-2 sm:px-3 py-1 rounded-md transition hover:bg-gray-200"
                 >
@@ -96,7 +101,7 @@ function PagesMenu() {
                   : "hover:bg-gray-200"
               }`}
               onClick={() =>
-                currentPage < totalPages && setCurrentPage(currentPage + 1)
+                currentPage < totalPages && changePage(currentPage + 1)
               }
             />
           </PaginationItem>
