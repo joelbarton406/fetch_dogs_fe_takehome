@@ -11,11 +11,11 @@ import {
   FaDog,
   FaLocationDot,
   FaPaw,
-  FaTimeline,
+//   FaTimeline,
 } from "react-icons/fa6";
 
 const iconMap = {
-  ageMinMax: FaTimeline,
+  ageMinMax: FaPaw,
   zipCodes: FaLocationDot,
   selectedBreeds: FaDog,
 };
