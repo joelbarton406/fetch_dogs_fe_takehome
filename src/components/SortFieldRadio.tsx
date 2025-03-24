@@ -10,20 +10,20 @@ const SortFieldRadio = () => {
   const { state, dispatch } = ctx;
 
   return (
-    <div className="ml-3">
-      <RadioGroup
-        value={state.sortField}
-        onValueChange={(field: SortField) => {
-          dispatch({
-            type: "UPDATE_SORT",
-            payload: {
-              field,
-              direction: state.sortDirection,
-            },
-          });
-          dispatch({ type: "UPDATE_CURRENT_PAGE", payload: 1 }); // Reset to page 1 on sort change
-        }}
-      >
+    <RadioGroup
+      value={state.sortField}
+      onValueChange={(field: SortField) => {
+        dispatch({
+          type: "UPDATE_SORT",
+          payload: {
+            field,
+            direction: state.sortDirection,
+          },
+        });
+        dispatch({ type: "UPDATE_CURRENT_PAGE", payload: 1 });
+      }}
+    >
+      <div className="flex space-x-4">
         <div className="flex items-center">
           <RadioGroupItem value="breed" id="r1" />
           <Label htmlFor="r1" className="ml-2">
@@ -44,8 +44,8 @@ const SortFieldRadio = () => {
             Age
           </Label>
         </div>
-      </RadioGroup>
-    </div>
+      </div>
+    </RadioGroup>
   );
 };
 

@@ -1,4 +1,4 @@
-import { searchDogs } from "@/api/dogs";
+import { getBreeds, searchDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
 import { useReducer, useEffect } from "react";
 
@@ -6,12 +6,8 @@ export type Favorites = Map<string, boolean>;
 type SortDirection = "asc" | "desc";
 export type SortField = "breed" | "name" | "age";
 
-export interface FilterTerm {
-  type: string;
-  value: string;
-}
-
 interface State {
+  breeds: string[];
   dogs: string[];
   favorites: Favorites;
   searchResultTotal: number;
@@ -21,13 +17,13 @@ interface State {
   sortField: SortField;
   sortDirection: SortDirection;
   selectedBreeds: string[];
-  ageMinMax: number[];
   zipCodes: string[];
+  ageMinMax: number[];
   adoptionMatch: Dog | null;
-  filterTerms: FilterTerm[];
 }
 
 type Action =
+  | { type: "SET_BREEDS"; payload: string[] }
   | { type: "SET_DOGS"; payload: { dogs: string[]; total: number } }
   | { type: "SET_ADOPTION_MATCH"; payload: Dog }
   | { type: "TOGGLE_FAVORITE"; payload: string }
@@ -36,13 +32,32 @@ type Action =
       type: "UPDATE_SORT";
       payload: { field: SortField; direction: SortDirection };
     }
-  | { type: "UPDATE_SELECTED_BREEDS"; payload: string }
-  | { type: "UPDATE_SELECTED_ZIPCODES"; payload: string }
+  | { type: "UPDATE_SELECTED_BREEDS"; payload: string[] } // changed from string to string[]
+  | { type: "UPDATE_SELECTED_ZIPCODES"; payload: string[] }
   | { type: "UPDATE_AGE_MIN_MAX"; payload: number[] }
   | { type: "CLEAR_ALL_FILTER_TERMS" };
 
+const initialState: State = {
+  breeds: [],
+  dogs: [],
+  favorites: new Map(),
+  searchResultTotal: 0,
+  totalPages: 0,
+  currentPage: 1,
+  resultsPerPage: 21,
+  sortField: "breed",
+  sortDirection: "asc",
+  selectedBreeds: [],
+  ageMinMax: [0, 14],
+  zipCodes: [],
+  adoptionMatch: null,
+};
+
 const dogsReducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case "SET_BREEDS": {
+      return { ...state, breeds: action.payload };
+    }
     case "SET_DOGS": {
       return {
         ...state,
@@ -72,80 +87,52 @@ const dogsReducer = (state: State, action: Action): State => {
         ...state,
         sortField,
         sortDirection,
-        currentPage: 1,
       };
     }
     case "UPDATE_AGE_MIN_MAX": {
-      return { ...state, ageMinMax: action.payload, currentPage: 1 };
+      return { ...state, ageMinMax: action.payload };
     }
     case "UPDATE_SELECTED_ZIPCODES": {
-      const zipCode = action.payload;
-
-      const updatedSelectedZipCodes = state.zipCodes.includes(zipCode)
-        ? state.zipCodes.filter((zip) => zip !== zipCode)
-        : [...state.zipCodes, zipCode];
-
+      const newZipCodes = action.payload;
       return {
         ...state,
-        zipCodes: updatedSelectedZipCodes,
-        filterTerms: [
-          ...state.filterTerms.filter((term) => term.type !== "zipCode"),
-          ...updatedSelectedZipCodes.map((zip) => ({
-            type: "zipCode",
-            value: zip,
-          })),
-        ],
-        currentPage: 1,
+        zipCodes: newZipCodes,
       };
     }
     case "UPDATE_SELECTED_BREEDS": {
-      const breed = action.payload;
-      const updatedSelectedBreeds = state.selectedBreeds.includes(breed)
-        ? state.selectedBreeds.filter((b) => b !== breed)
-        : [...state.selectedBreeds, breed];
-
+      const newBreeds = action.payload;
       return {
         ...state,
-        selectedBreeds: updatedSelectedBreeds,
-        filterTerms: [
-          ...state.filterTerms.filter((term) => term.type !== "breed"),
-
-          ...updatedSelectedBreeds.map((b) => ({
-            type: "breed",
-            value: b,
-          })),
-        ],
-        currentPage: 1,
+        selectedBreeds: newBreeds,
       };
     }
-    case "CLEAR_ALL_FILTER_TERMS": {
-      return { ...state, filterTerms: [] };
-    }
+
+    // case "CLEAR_ALL_FILTER_TERMS": {
+    //   return { ...state, filterTerms: [] };
+    // }
     default:
       return state;
   }
-};
-
-const initialState: State = {
-  dogs: [],
-  favorites: new Map(),
-  searchResultTotal: 0,
-  totalPages: 0,
-  currentPage: 1,
-  resultsPerPage: 21,
-  sortField: "breed",
-  sortDirection: "asc",
-  selectedBreeds: [],
-  ageMinMax: [0, 14],
-  zipCodes: [],
-  adoptionMatch: null,
-  filterTerms: [],
 };
 
 export const useFetchDogs = () => {
   const [state, dispatch] = useReducer(dogsReducer, initialState);
 
   useEffect(() => {
+    const fetchBreeds = async () => {
+      try {
+        const breeds = await getBreeds();
+        dispatch({
+          type: "SET_BREEDS",
+          payload: breeds,
+        });
+      } catch (error) {
+        console.error("Error fetching breeds:", error);
+      }
+    };
+
+    fetchBreeds();
+
     const fetchDogs = async () => {
       try {
         const sort = `${state.sortField}:${state.sortDirection}`;
@@ -153,6 +140,7 @@ export const useFetchDogs = () => {
           (state.currentPage - 1) *
           state.resultsPerPage
         ).toString();
+
         const dogsResponse = await searchDogs({
           sort,
           size: state.resultsPerPage,

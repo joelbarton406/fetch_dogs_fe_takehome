@@ -15,20 +15,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { DogsContext } from "@/contexts/DogsContext";
 
-const BreedComboBox = () => {
+import { DogsContext } from "@/contexts/DogsContext";
+import { Filters } from "@/components/FiltersMenu";
+
+type BreedComboBoxProps = {
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+};
+
+const BreedComboBox = ({ filters, setFilters }: BreedComboBoxProps) => {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
-  const { state, dispatch, breeds } = ctx;
-
+  const { state } = ctx;
   const [open, setOpen] = useState(false);
 
-  const updateSelectedBreeds = (breed: string) => {
-    dispatch({
-      type: "UPDATE_SELECTED_BREEDS",
-      payload: breed,
-    });
+  const handleSelectBreed = (breed: string) => {
+    const updatedBreeds = filters.selectedBreeds.includes(breed)
+      ? filters.selectedBreeds.filter((b) => b !== breed)
+      : [...filters.selectedBreeds, breed];
+    setFilters((prev) => ({ ...prev, selectedBreeds: updatedBreeds }));
   };
 
   return (
@@ -44,25 +50,23 @@ const BreedComboBox = () => {
           <ChevronsUpDown />
         </ButtonWrapper>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] h-[200px] p-0">
+      <PopoverContent>
         <Command>
           <CommandInput placeholder="Search breeds..." className="h-9" />
           <CommandList>
             <CommandEmpty>No breed found.</CommandEmpty>
             <CommandGroup>
-              {breeds.map((breed) => (
+              {state.breeds.map((breed) => (
                 <CommandItem
                   className="flex flex-row justify-between"
                   key={breed}
                   value={breed}
-                  onSelect={() => {
-                    updateSelectedBreeds(breed);
-                  }}
+                  onSelect={handleSelectBreed}
                 >
                   {breed}
                   <Check
                     className={cn(
-                      state.selectedBreeds.includes(breed)
+                      filters.selectedBreeds.includes(breed)
                         ? "visible"
                         : "invisible"
                     )}

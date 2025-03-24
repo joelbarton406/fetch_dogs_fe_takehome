@@ -4,10 +4,10 @@ import { DogsContext } from "@/contexts/DogsContext";
 import { getDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
 
-import DogCard from "./DogCard";
 import { fetchDogLocations } from "@/api/location";
+import { DogCard, SkeletonDogCard } from "@/components/DogCard";
 
-function Results() {
+export default function Results() {
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
 
@@ -25,15 +25,13 @@ function Results() {
       const dogs = await getDogs(state.dogs);
       const zipCodes = Array.from(new Set(dogs.map((dog) => dog.zip_code)));
       const locations = await fetchDogLocations(zipCodes);
-
-      // Map locations to zip codes
       const locationMap = Object.fromEntries(
         locations.map((loc) => [loc.zip_code, loc])
       );
 
       return dogs.map((dog) => ({
         ...dog,
-        location: locationMap[dog.zip_code] || null, // Ensure location is correctly assigned
+        location: locationMap[dog.zip_code],
       }));
     },
     {
@@ -41,16 +39,15 @@ function Results() {
     }
   );
 
-  if (isLoading) return <div>Loading Dogs...</div>;
   if (error) return <div>Error fetching Dogs: {error.message}</div>;
 
   return (
-    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center sm:justify-items-stretch">
-      {dogsConsolidated?.map((dog) => (
-        <DogCard key={dog.id} dog={dog} />
-      ))}
+    <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center sm:justify-items-stretch mt-2">
+      {isLoading
+        ? Array(21)
+            .fill(null)
+            .map((_, index) => <SkeletonDogCard key={`${index}-skeleton`} />)
+        : dogsConsolidated?.map((dog) => <DogCard key={dog.id} dog={dog} />)}
     </ul>
   );
 }
-
-export default Results;

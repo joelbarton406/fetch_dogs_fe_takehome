@@ -18,7 +18,7 @@ function PagesMenu() {
   const { totalPages, currentPage } = state;
 
   const changePage = (page: number) => {
-    dispatch({ type: "SET_PAGE", payload: page });
+    dispatch({ type: "UPDATE_CURRENT_PAGE", payload: page });
   };
 
   const getPageNumbers = () => {
@@ -61,7 +61,7 @@ function PagesMenu() {
   };
 
   return (
-    <div className="mb-6 flex justify-center">
+    <div className="my-4 flex justify-center">
       <Pagination>
         <PaginationContent className="flex flex-wrap gap-1 sm:gap-2 justify-center">
           <PaginationItem>

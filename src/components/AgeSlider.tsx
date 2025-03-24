@@ -1,30 +1,29 @@
 import { Slider } from "@/components/ui/slider";
-import { useContext } from "react";
-import { DogsContext } from "@/contexts/DogsContext";
+import { Filters } from "@/components/FiltersMenu";
 
-function AgeSlider() {
-  const ctx = useContext(DogsContext);
-  if (!ctx) throw new Error("DogsContext failed");
+type AgeSliderProps = {
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+};
 
-  const { state, dispatch } = ctx;
-  const { ageMinMax } = state;
-
+function AgeSlider({ filters, setFilters }: AgeSliderProps) {
+  const handleAgeChange = (ageRange: number[]) => {
+    setFilters((prev) => ({ ...prev, ageMinMax: ageRange }));
+  };
   return (
     <div className="bg-white rounded-lg flex flex-col items-center text-gray-700">
       <div>
         <span className="mr-1">Age range</span>
         <span>
-          ({ageMinMax[0]}...{ageMinMax[1]})
+          ({filters.ageMinMax[0]} - {filters.ageMinMax[1]})
         </span>
       </div>
 
       <Slider
-        value={ageMinMax}
+        value={filters.ageMinMax}
         min={0}
         max={14}
-        onValueChange={(values) =>
-          dispatch({ type: "UPDATE_AGE_MIN_MAX", payload: values })
-        }
+        onValueChange={handleAgeChange}
         className="flex-grow"
       />
     </div>

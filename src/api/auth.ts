@@ -2,14 +2,13 @@ import { apiClient } from "./client";
 
 export const verifySession = async () => {
   try {
-    // Use any authenticated endpoint, like fetching breeds
     console.log("testing an authenticated endpoint...");
     await apiClient.get("/dogs/breeds");
     console.log("Successful!");
-    return true; // Session is valid
+    return true;
   } catch (error: unknown) {
     console.log(error);
-    return false; // Session expired or invalid
+    return false;
   }
 };
 

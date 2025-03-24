@@ -4,13 +4,18 @@ import { FaSearch } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 
 /* this doesn't actually work since there isn't a way to fetch dogs by name, I left it in because this would be a nice extended functionality */
+
+// type DogNameInputProps = {
+//   dogName?: string;
+//   setDogName?: React.Dispatch<React.SetStateAction<string>>;
+// };
+
 export default function DogNameInput() {
   const [dogNameValue, setDogNameValue] = useState("");
   const MIN_NAME_LENGTH = 3;
 
   const ctx = useContext(DogsContext);
   if (!ctx) throw new Error("DogsContext failed");
-  //   const { handleSearchedDogNamesChange } = ctx;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDogNameValue(event.target.value);

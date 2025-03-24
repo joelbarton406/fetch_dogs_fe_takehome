@@ -25,10 +25,10 @@ export function useLocationData(zipCode?: string, currentZipCode?: string) {
     () => fetchZipLocationData(zipCode!, currentZipCode!),
     {
       enabled: Boolean(zipCode && currentZipCode),
-      staleTime: Infinity,
-      cacheTime: Infinity,
-      retry: true,
-      retryDelay: 2000,
+      //   staleTime: Infinity,
+      //   cacheTime: Infinity,
+      //   retry: true,
+      //   retryDelay: 2000,
     }
   );
 }

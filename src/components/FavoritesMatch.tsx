@@ -1,7 +1,7 @@
 import { getDogs, getMatch } from "@/api/dogs";
 import { ButtonWrapper } from "@/components/ui/button";
 import { DogsContext } from "@/contexts/DogsContext";
-import DogCard from "@/components/DogCard";
+import { DogCard } from "@/components/DogCard";
 import { useContext, useState } from "react";
 import {
   Dialog,
@@ -37,17 +37,19 @@ function FavoritesMatch() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <ButtonWrapper
-          variant="outline"
-          onClick={() => handleMatch(Array.from(favorites.keys()))}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          disabled={favorites.size === 0}
-        >
-          {hover && favorites.size > 0
-            ? "Match"
-            : `${favorites.size} Fav${favorites.size === 1 ? "" : "s"}`}
-        </ButtonWrapper>
+        {favorites.size > 0 && (
+          <ButtonWrapper
+            variant="outline"
+            onClick={() => handleMatch(Array.from(favorites.keys()))}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            size="lg"
+          >
+            {hover && favorites.size > 0
+              ? "Get Match"
+              : `${favorites.size} Favorite${favorites.size === 1 ? "" : "s"}`}
+          </ButtonWrapper>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
