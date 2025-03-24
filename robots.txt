@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /private/
+Allow: /
+
+Allow: /public/
+Allow: /src/
+
+# Sitemap location
+Sitemap: https://fetch-dogs-fe-takehome.vercel.app/sitemap.xml

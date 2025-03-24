@@ -101,7 +101,7 @@ const FilterBank = ({ filters, setFilters }: FilterBankProps) => {
                       <FaDeleteLeft />
                     </button>
                   </div>
-                ));
+                ))
               } else {
                 return null;
               }
