@@ -4,8 +4,6 @@
 #### Take home instructions: [here](https://frontend-take-home.fetch.com/)
 #### Deployed: [Fetch Dogs](https://fetch-dogs-fe-takehome.vercel.app/)
 
-> note: the "X miles away" functionality does work, but I accidentally hit the free tier limit of api calls to google's geocoding api
-
 ## 🛠️ Tech Stack
 - **Vite** (React + TypeScript)
 - **Tailwind CSS**
