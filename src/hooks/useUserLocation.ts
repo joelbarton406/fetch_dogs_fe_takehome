@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { setDefaults, fromLatLng, OutputFormat } from "react-geocode";
-const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const apiKey = "AIzaSyDVAOhBM-eG0GAwcg0NESEMAodg72hzMhA"; //import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 export interface UserLocation {
   zip_code: string | null;
   latitude: number | null;
@@ -60,7 +60,7 @@ export const useUserLocation = () => {
     };
 
     setDefaults({
-      key: apiKey, // pulled in from Vercel-set environment variable
+      key: apiKey,
       language: "en",
       region: "es",
       outputFormat: OutputFormat.JSON,

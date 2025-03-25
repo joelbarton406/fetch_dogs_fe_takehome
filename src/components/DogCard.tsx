@@ -1,4 +1,4 @@
-import { useContext, memo, FC } from "react";
+import { useContext, memo, FC, useState } from "react";
 import { DogsContext } from "@/contexts/DogsContext";
 import { Dog } from "@/types/api";
 import { FaHeart } from "react-icons/fa6";
@@ -28,71 +28,91 @@ export function SkeletonDogCard() {
 
 interface DogCardProps {
   dog: Dog;
+  handleCalculateDistance: (dogZipCode: string) => Promise<number | null>;
 }
 
-export const DogCard: FC<DogCardProps> = memo(({ dog }) => {
-  const { id, name, age, breed, img, location } = dog;
+export const DogCard: FC<DogCardProps> = memo(
+  ({ dog, handleCalculateDistance }) => {
+    const { id, name, age, breed, img, location, zip_code } = dog;
 
-  const ctx = useContext(DogsContext);
-  if (!ctx) throw new Error("DogsContext is not available.");
+    const ctx = useContext(DogsContext);
+    if (!ctx) throw new Error("DogsContext is not available.");
 
-  const { state, dispatch } = ctx;
-  const { favorites } = state;
+    const { state, dispatch } = ctx;
+    const { favorites } = state;
 
-  const handleToggleFavorite = () => {
-    dispatch({ type: "TOGGLE_FAVORITE", payload: id });
-  };
+    const [distance, setDistance] = useState<number | null>(null);
+    const [isDistanceButtonClicked, setIsDistanceButtonClicked] =
+      useState(false);
 
-  return (
-    <li className="relative flex flex-col items-center text-white">
-      <div className="relative w-72 h-72 overflow-hidden group rounded-md">
-        <img
-          src={img}
-          alt={`${name}-${breed}-${age}`}
-          className={`w-full h-full object-cover transition-opacity duration-500 group-hover:brightness-0`}
-          loading="lazy"
-        />
+    const handleToggleFavorite = () => {
+      dispatch({ type: "TOGGLE_FAVORITE", payload: id });
+    };
 
-        <>
-          <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <span className="text-4xl font-bold rounded">{name}</span>
+    const handleDistanceClick = async () => {
+      const calculatedDistance = await handleCalculateDistance(zip_code);
+      setDistance(calculatedDistance);
+      setIsDistanceButtonClicked(true);
+    };
 
-            <div className="flex flex-col items-center text-md font-light opacity-65">
-              <span>{breed}</span>
-              {location ? (
-                <span>
-                  {location.city}, {location.state}
-                </span>
-              ) : (
-                <span>Location unknown</span>
-              )}
-              <span>{age} years old</span>
+    return (
+      <li className="relative flex flex-col items-center text-white">
+        <div className="relative w-72 h-72 overflow-hidden group rounded-md">
+          <img
+            src={img}
+            alt={`${name}-${breed}-${age}`}
+            className={`w-full h-full object-cover transition-opacity duration-500 group-hover:brightness-0`}
+            loading="lazy"
+          />
+
+          <>
+            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span className="text-4xl font-bold rounded">{name}</span>
+
+              <div className="flex flex-col items-center text-md font-light opacity-65">
+                <span>{breed}</span>
+                {location ? (
+                  <span>
+                    {location.city}, {location.state}
+                  </span>
+                ) : (
+                  <span>Location unknown</span>
+                )}
+                <span>{age} years old</span>
+              </div>
             </div>
-          </div>
 
-          <div className="absolute top-2 left-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="absolute top-2 left-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <Button
+                className="text-md font-semibold text-white"
+                variant="ghost"
+                onClick={handleDistanceClick}
+                disabled={isDistanceButtonClicked}
+              >
+                <span>
+                  {distance !== null ? (
+                    <span>{distance} miles away</span>
+                  ) : (
+                    <span>Calculate Distance</span>
+                  )}
+                </span>
+              </Button>
+            </div>
+
             <Button
-              className="text-md font-semibold text-white"
+              className="absolute top-2 right-2"
               variant="ghost"
-              onClick={() => console.log(`Show map location of ${name}`)}
+              onClick={handleToggleFavorite}
             >
-              <span>X miles away</span>
+              <FaHeart
+                className={`cursor-pointer ${
+                  favorites.has(id) ? "text-pink-600" : ""
+                }`}
+              />
             </Button>
-          </div>
-
-          <Button
-            className="absolute top-2 right-2"
-            variant="ghost"
-            onClick={handleToggleFavorite}
-          >
-            <FaHeart
-              className={`cursor-pointer ${
-                favorites.has(id) ? "text-pink-600" : ""
-              }`}
-            />
-          </Button>
-        </>
-      </div>
-    </li>
-  );
-});
+          </>
+        </div>
+      </li>
+    );
+  }
+);

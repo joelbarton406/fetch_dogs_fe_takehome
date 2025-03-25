@@ -1,5 +1,5 @@
 import { fromAddress } from "react-geocode";
-
+// import { useCallback } from "react";
 const zipCoordCache: Record<string, { lat: number; lng: number }> = {};
 
 const distanceCache: Record<string, number> = {};
@@ -14,7 +14,7 @@ function haversineDistance(
   lat2: number,
   lon2: number
 ): number {
-  const R = 6371; // Earth's radius in km
+  const R = 6371;
   const dLat = toRadians(lat2 - lat1);
   const dLon = toRadians(lon2 - lon1);
   const a =
@@ -45,11 +45,11 @@ async function getCoordinatesForZip(zip: string) {
   }
 }
 
-async function getDistanceBetweenZipCodes(
-  zip1: string,
-  zip2: string
-): Promise<number> {
-  const cacheKey = [zip1, zip2].sort().join("-");
+const getDistanceBetweenZipCodes = async (
+  userZip: string,
+  dogZip: string
+): Promise<number> => {
+  const cacheKey = [userZip, dogZip].sort().join("-");
 
   if (distanceCache[cacheKey] !== undefined) {
     return distanceCache[cacheKey];
@@ -57,8 +57,8 @@ async function getDistanceBetweenZipCodes(
 
   try {
     const [coord1, coord2] = await Promise.all([
-      getCoordinatesForZip(zip1),
-      getCoordinatesForZip(zip2),
+      getCoordinatesForZip(userZip),
+      getCoordinatesForZip(dogZip),
     ]);
 
     const distance = haversineDistance(
@@ -73,11 +73,11 @@ async function getDistanceBetweenZipCodes(
     return distance;
   } catch (error) {
     console.error(
-      `Error calculating distance between ${zip1} and ${zip2}:`,
+      `Error calculating distance between ${userZip} and ${dogZip}:`,
       error
     );
     return 0;
   }
-}
+};
 
 export default getDistanceBetweenZipCodes;

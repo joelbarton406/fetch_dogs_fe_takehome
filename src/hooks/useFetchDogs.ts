@@ -1,6 +1,7 @@
 import { getBreeds, searchDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
 import { useReducer, useEffect } from "react";
+import { UserLocation, useUserLocation } from "@/hooks/useUserLocation";
 
 export type Favorites = Map<string, boolean>;
 type SortDirection = "asc" | "desc";
@@ -20,6 +21,7 @@ interface State {
   zipCodes: string[];
   ageMinMax: number[];
   adoptionMatch: Dog | null;
+  userLocation: UserLocation | null;
 }
 
 type Action =
@@ -35,7 +37,8 @@ type Action =
   | { type: "UPDATE_SELECTED_BREEDS"; payload: string[] } // changed from string to string[]
   | { type: "UPDATE_SELECTED_ZIPCODES"; payload: string[] }
   | { type: "UPDATE_AGE_MIN_MAX"; payload: number[] }
-  | { type: "CLEAR_ALL_FILTER_TERMS" };
+  | { type: "CLEAR_ALL_FILTER_TERMS" }
+  | { type: "UPDATE_USER_LOCATION"; payload: UserLocation | null };
 
 const initialState: State = {
   breeds: [],
@@ -51,6 +54,7 @@ const initialState: State = {
   ageMinMax: [0, 14],
   zipCodes: [],
   adoptionMatch: null,
+  userLocation: null,
 };
 
 const dogsReducer = (state: State, action: Action): State => {
@@ -106,7 +110,9 @@ const dogsReducer = (state: State, action: Action): State => {
         selectedBreeds: newBreeds,
       };
     }
-
+    case "UPDATE_USER_LOCATION": {
+      return { ...state, userLocation: action.payload };
+    }
     // case "CLEAR_ALL_FILTER_TERMS": {
     //   return { ...state, filterTerms: [] };
     // }
@@ -116,6 +122,7 @@ const dogsReducer = (state: State, action: Action): State => {
 };
 
 export const useFetchDogs = () => {
+  const { userLocation } = useUserLocation();
   const [state, dispatch] = useReducer(dogsReducer, initialState);
 
   useEffect(() => {
@@ -170,6 +177,11 @@ export const useFetchDogs = () => {
     state.sortField,
     state.sortDirection,
   ]);
+
+  useEffect(() => {
+    console.log("updating userlocation....", userLocation);
+    dispatch({ type: "UPDATE_USER_LOCATION", payload: userLocation });
+  }, [userLocation]);
 
   return { state, dispatch };
 };
