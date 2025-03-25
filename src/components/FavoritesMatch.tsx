@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { calculateDistance } from "@/utils/calculateDistance";
 
 function FavoritesMatch() {
   const [hover, setHover] = useState(false);
@@ -56,7 +57,13 @@ function FavoritesMatch() {
           <DialogTitle className="text-center">Your match</DialogTitle>
           <DialogDescription />
         </DialogHeader>
-        {adoptionMatch && <DogCard dog={adoptionMatch} />}
+        {adoptionMatch && (
+          <DogCard
+            key={adoptionMatch.id}
+            dog={adoptionMatch}
+            handleCalculateDistance={calculateDistance}
+          />
+        )}
         <DialogFooter>
           <ButtonWrapper
             onClick={() =>

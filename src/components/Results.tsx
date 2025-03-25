@@ -5,7 +5,7 @@ import { getDogs } from "@/api/dogs";
 import { Dog } from "@/types/api";
 
 import { fetchDogLocations } from "@/api/location";
-import calcDistanceBetweenZips from "@/utils/calcDistanceBetweenZips";
+import { calculateDistance } from "@/utils/calculateDistance";
 
 import { DogCard, SkeletonDogCard } from "@/components/DogCard";
 
@@ -14,7 +14,6 @@ export default function Results() {
   if (!ctx) throw new Error("DogsContext failed");
 
   const { state } = ctx;
-  const { userLocation } = state;
 
   const {
     data: dogsConsolidated,
@@ -44,17 +43,6 @@ export default function Results() {
 
   if (error) return <div>Error fetching Dogs: {error.message}</div>;
 
-  const handleCalculateDistance = async (dogZipCode: string) => {
-    if (!userLocation || !userLocation.zip_code) return null;
-
-    const distance = await calcDistanceBetweenZips(
-      userLocation.zip_code,
-      dogZipCode
-    );
-
-    return Math.round(distance);
-  };
-
   return (
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center sm:justify-items-stretch mt-2">
       {isLoading
@@ -65,7 +53,7 @@ export default function Results() {
             <DogCard
               key={dog.id}
               dog={dog}
-              handleCalculateDistance={handleCalculateDistance}
+              handleCalculateDistance={calculateDistance}
             />
           ))}
     </ul>

@@ -28,7 +28,10 @@ export function SkeletonDogCard() {
 
 interface DogCardProps {
   dog: Dog;
-  handleCalculateDistance: (dogZipCode: string) => Promise<number | null>;
+  handleCalculateDistance: (
+    userZipCode: string,
+    dogZipCode: string
+  ) => Promise<number | null>;
 }
 
 export const DogCard: FC<DogCardProps> = memo(
@@ -39,7 +42,7 @@ export const DogCard: FC<DogCardProps> = memo(
     if (!ctx) throw new Error("DogsContext is not available.");
 
     const { state, dispatch } = ctx;
-    const { favorites } = state;
+    const { favorites, userLocation } = state;
 
     const [distance, setDistance] = useState<number | null>(null);
     const [isDistanceButtonClicked, setIsDistanceButtonClicked] =
@@ -50,9 +53,14 @@ export const DogCard: FC<DogCardProps> = memo(
     };
 
     const handleDistanceClick = async () => {
-      const calculatedDistance = await handleCalculateDistance(zip_code);
-      setDistance(calculatedDistance);
-      setIsDistanceButtonClicked(true);
+      if (userLocation && userLocation.zip_code) {
+        const calculatedDistance = await handleCalculateDistance(
+          userLocation.zip_code,
+          zip_code
+        );
+        setDistance(calculatedDistance);
+        setIsDistanceButtonClicked(true);
+      }
     };
 
     return (

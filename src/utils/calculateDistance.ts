@@ -45,7 +45,7 @@ async function getCoordinatesForZip(zip: string) {
   }
 }
 
-const getDistanceBetweenZipCodes = async (
+export const calculateDistance = async (
   userZip: string,
   dogZip: string
 ): Promise<number> => {
@@ -70,7 +70,7 @@ const getDistanceBetweenZipCodes = async (
 
     distanceCache[cacheKey] = distance;
 
-    return distance;
+    return Math.round(distance);
   } catch (error) {
     console.error(
       `Error calculating distance between ${userZip} and ${dogZip}:`,
@@ -79,5 +79,3 @@ const getDistanceBetweenZipCodes = async (
     return 0;
   }
 };
-
-export default getDistanceBetweenZipCodes;

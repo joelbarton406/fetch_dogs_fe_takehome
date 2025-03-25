@@ -11,7 +11,6 @@ import {
   FaDog,
   FaLocationDot,
   FaPaw,
-//   FaTimeline,
 } from "react-icons/fa6";
 
 const iconMap = {
